@@ -54,6 +54,59 @@ function showSignUpPage() {
     signUpPage.classList.remove('hide')
 }
 
+let signUpButton = document.querySelector('#signUpButton');
+signUpButton.addEventListener('click', checkPassword);
+
+let verifyPassword = document.querySelector('#verifyPassword')
+verifyPassword.addEventListener('keypress', (e) => {
+    if (e.key == 'Enter') { return checkPassword() }
+})
+
+function checkPassword() {
+
+    let desiredPassword = document.querySelector('#desiredPassword')
+    let verifyPassword = document.querySelector('#verifyPassword')
+
+    if (desiredPassword.value !== verifyPassword.value || desiredPassword.value.length === 0) {
+        loginError("Error: Passwords do not match!")
+    }
+
+    fetch('http://localhost:8000/api/users')
+        .then(response => response.json())
+        .then(data => createAccount(data, verifyPassword))
+
+}
+
+
+function createAccount(data, password) {
+    let signUpfirstName = document.querySelector('#signUpfirstName')
+    let signUplastName = document.querySelector('#signUplastName');
+    let desiredUserName = document.querySelector('#desiredUserName')
+    let signUpemail = document.querySelector('#signUpemail')
+
+
+    for (let i = 0; i < data.length; i++) {
+        const current = data[i];
+        if (current.user_name === desiredUserName.value) {
+            loginError("Error: That Username is already taken!")
+
+        }
+    }
+
+    console.log(data);
+    console.log(password.value);
+}
+
+function loginError(msg) {
+    let signUpErrors = document.querySelector('#signUpErrors');
+    signUpErrors.textContent = ""
+    let passwordP = document.createElement('p')
+    passwordP.textContent = msg
+    return signUpErrors.appendChild(passwordP)
+}
+
+
+
 
 
 //! proof of concept =================================

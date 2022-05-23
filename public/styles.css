@@ -19,8 +19,14 @@
     justify-items: right;
 }
 
+#signUpMessage {
+    width: fit-content;
+    text-align: right;
+}
 
-#signUp {
+
+/* form */
+#signUpForm {
     width: fit-content;
     display: grid;
     justify-items: right;
