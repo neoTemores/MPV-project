@@ -17,26 +17,50 @@
 
     <div id="loginPage">
 
-        <div id="usernameDiv">
-            <label for="username"> User Name</label>
-            <input type="text" id="username">
-        </div>
-        <br>
-        <div id="passwordDiv">
-            <label for="password"> Password</label>
-            <input type="password" id="password">
-        </div>
-        <br>
-        <button id="loginButton">click to login</button>
+        <div id="loginDisplay">
 
+            <div id="usernameDiv">
+                <label for="username"> User Name</label>
+                <input type="text" id="username">
+            </div>
+            <br>
+            <div id="passwordDiv">
+                <label for="password"> Password</label>
+                <input type="password" id="password">
+            </div>
+            <br>
+            <button id="loginButton">click to login</button>
+
+            <div id="signUpMessage" class="hide">
+                <p>User Name or Password not found!</p>
+                <p>Please create an account.</p>
+                <button id="signUpLink">sign up</button>
+            </div>
+
+        </div>
+
+        <div id="signUpPage" class="hide">
+
+            <form action="" id="signUp">
+                <p>First Name: <input type="text" id="firstName" /></p>
+                <p>Last Name: <input type="text" id="lastName" /></p>
+                <p>Desired User Name: <input type="text" id="desiredUserName" /></p>
+                <p>E-Mail Address: <input type="text" id="email" /></p>
+                <p>Password: <input type="text" id="desiredPassword" /></p>
+                <p>Verify Password: <input type="text" id="verifyPassword" /></p>
+                <button id="loginButton">click to sign up</button>
+
+            </form>
+
+        </div>
     </div>
+
 
     <div id="homePage" class="hide">
 
         <button id="names">click to see USERS names!</button>
         <br><br>
         <button id="emails">click to see USER emails!</button>
-        <!-- <button>click to see POSTS!</button> -->
 
         <div id="resultContainer"></div>
 
@@ -45,5 +69,3 @@
 </body>
 
 </html>
-
-<!-- onclick="window.location.pathname = '/api/posts'" -->

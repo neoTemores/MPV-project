@@ -3,5 +3,25 @@
 }
 
 .hide {
-    display: none;
+    display: none !important;
+}
+
+#loginPage {
+    /* width: 80vw; */
+    grid-column: auto;
+    display: grid;
+    justify-items: center;
+}
+
+#loginDisplay {
+    width: fit-content;
+    display: grid;
+    justify-items: right;
+}
+
+
+#signUp {
+    width: fit-content;
+    display: grid;
+    justify-items: right;
 }
