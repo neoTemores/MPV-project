@@ -40,3 +40,35 @@ function displayEmails(data) {
         resultContainer.appendChild(div)
     }
 }
+
+
+let loginButton = document.querySelector('#loginButton')
+loginButton.addEventListener('click', login)
+
+function login() {
+    let inputUserName = document.querySelector('#username')
+    console.log(inputUserName.value);
+    let inputPassword = document.querySelector('#password')
+    console.log(inputPassword.value);
+
+    fetch('http://localhost:8000/api/users')
+        .then(response => response.json())
+        .then(data => authenticate(data))
+
+    for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+
+    }
+
+
+
+    // let homePage = document.querySelector('#homePage')
+    // homePage.classList.remove('hide')
+
+    // let loginPage = document.querySelector('#loginPage')
+    // loginPage.classList.add('hide')
+}
+
+function authenticate(data) {
+
+}
