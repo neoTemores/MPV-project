@@ -68,13 +68,12 @@ function checkPassword() {
     let verifyPassword = document.querySelector('#verifyPassword')
 
     if (desiredPassword.value !== verifyPassword.value || desiredPassword.value.length === 0) {
-        loginError("Error: Passwords do not match!")
+        return signUpMessage("Error: Passwords do not match!")
     }
 
     fetch('http://localhost:8000/api/users')
         .then(response => response.json())
         .then(data => createAccount(data, verifyPassword))
-
 }
 
 
@@ -88,16 +87,42 @@ function createAccount(data, password) {
     for (let i = 0; i < data.length; i++) {
         const current = data[i];
         if (current.user_name === desiredUserName.value) {
-            loginError("Error: That Username is already taken!")
-
+            return signUpMessage("Error: That Username is already taken!")
         }
     }
 
-    console.log(data);
-    console.log(password.value);
+    let accountCreationData = {
+        firstName: signUpfirstName.value,
+        lastName: signUplastName.value,
+        userName: desiredUserName.value,
+        email: signUpemail.value,
+        password: password.value
+    }
+
+    fetch('http://localhost:8000/api/users/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(accountCreationData),
+    })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => { console.error(error); })
+
+    signUpMessage('Account successfuly created! Please sign in')
+
+    ///? split into diff function???
+    let signUpMsg = document.querySelector('#signUpErrors')
+    let goBackToSignInButton = document.createElement('button')
+    goBackToSignInButton.id = 'goBackToSignInButton'
+    goBackToSignInButton.textContent = "Go back to sign in"
+    goBackToSignInButton.addEventListener('click', () => {
+        window.location.reload();
+    })
+    signUpMsg.appendChild(goBackToSignInButton)
+
 }
 
-function loginError(msg) {
+function signUpMessage(msg) {
     let signUpErrors = document.querySelector('#signUpErrors');
     signUpErrors.textContent = ""
     let passwordP = document.createElement('p')
@@ -122,7 +147,7 @@ button.addEventListener('click', () => {
 function displayUser(data) {
 
     let resultContainer = document.querySelector('#resultContainer')
-    resultContainer.innerHTML = ""
+    resultContainer.textContent = ""
 
     for (let i = 0; i < data.length; i++) {
         console.log(data[i].user_name);
@@ -142,7 +167,7 @@ button2.addEventListener('click', () => {
 function displayEmails(data) {
 
     let resultContainer = document.querySelector('#resultContainer')
-    resultContainer.innerHTML = ""
+    resultContainer.textContent = ""
 
     for (let i = 0; i < data.length; i++) {
         console.log(data[i].user_name);

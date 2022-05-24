@@ -24,10 +24,12 @@
     text-align: right;
 }
 
-
-/* form */
 #signUpForm {
     width: fit-content;
     display: grid;
     justify-items: right;
+}
+
+#signUpErrors {
+    text-align: right;
 }
