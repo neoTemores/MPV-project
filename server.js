@@ -20,6 +20,8 @@ app.post('/api/users/create', controller.createNewUser)
 
 app.get('/api/posts/all', controller.getAllPosts);
 
+app.get('/api/posts/:id', controller.getPostsById);
+
 
 
 

@@ -147,29 +147,69 @@ function displayAllPosts(data) {
     let resultContainer = document.querySelector('#resultContainer');
     for (let i = 0; i < data.length; i++) {
         const current = data[i];
+        let userId = current.user_id
+        let userName = current.user_name
+        let postContent = current.post_content
+        console.log(userId, userName, postContent);
 
-        let postDiv = document.createElement('div')
-        postDiv.id = current.user_id
-        postDiv.classList.add('userPostDiv')
-
-        let postCreator = document.createElement('p')
-        postCreator.textContent = (`@${current.user_name}`)
-        postCreator.classList.add('postCreatorName')
-        postDiv.appendChild(postCreator)
-
-        let postText = document.createElement('p')
-        postText.classList.add('postText')
-        postText.textContent = current.post_content
-        postDiv.appendChild(postText)
-
-        resultContainer.appendChild(postDiv)
+        createCards(userId, userName, postContent, resultContainer)
     }
+}
 
+function createCards(userId, userName, postContent, container) {
+    let postDiv = document.createElement('div')
+    postDiv.id = userId
+    postDiv.classList.add('userPostDiv')
+    postDiv.addEventListener('click', (e) => { fetchThatUsersPosts(e) })
 
+    let postCreator = document.createElement('p')
+    postCreator.textContent = (`@${userName}`)
+    postCreator.classList.add('postCreatorName')
+    postCreator.id = userId
+    postDiv.appendChild(postCreator)
+
+    let postText = document.createElement('p')
+    postText.classList.add('postText')
+    postText.id = userId
+    postText.textContent = postContent
+    postDiv.appendChild(postText)
+
+    container.appendChild(postDiv)
 }
 
 
+function fetchThatUsersPosts(e) {
+    let userId = +e.target.id;
 
+    fetch(`http://localhost:8000/api/posts/${userId}`)
+        .then(response => response.json())
+        .then(data => displayPostsByUser(data));
+}
+
+function displayPostsByUser(data) {
+    let resultContainer = document.querySelector('#resultContainer');
+    resultContainer.classList.add('hide');
+
+    let individualPostContainer = document.querySelector('#individualPostContainer')
+    individualPostContainer.classList.remove('hide')
+    individualPostContainer.textContent = ""
+
+    let homeButton = document.createElement('button')
+    homeButton.textContent = "Go Home"
+    homeButton.addEventListener('click', () => {
+        individualPostContainer.classList.add('hide')
+        resultContainer.classList.remove('hide');
+    })
+    individualPostContainer.appendChild(homeButton)
+    for (let i = 0; i < data.length; i++) {
+        const current = data[i];
+        let userId = current.user_id
+        let userName = current.user_name
+        let postContent = current.post_content
+        createCards(userId, userName, postContent, individualPostContainer)
+
+    }
+}
 //! proof of concept =================================
 
 // let button = document.querySelector('#names')

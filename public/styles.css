@@ -6,6 +6,7 @@ body {
     display: none !important;
 }
 
+
 #loginPageContainer {
     /* width: 80vw; */
     grid-column: auto;
@@ -40,6 +41,11 @@ body {
     border-radius: 15%;
 }
 
+.userPostDiv:hover {
+    opacity: 80%;
+    cursor: pointer;
+}
+
 .postCreatorName {
     font-size: .8rem;
     padding-top: .5rem;
@@ -59,7 +65,8 @@ body {
     /* justify-content: center; */
 
     grid-template-areas:
-        "navPanel resultContainer newsContainer";
+        "navPanel resultContainer newsContainer"
+        "navPanel individualPostContainer newsContainer";
 }
 
 #navPanel {
@@ -67,5 +74,9 @@ body {
 }
 
 #resultContainer {
+    justify-self: center;
+}
+
+#individualPostContainer {
     justify-self: center;
 }
