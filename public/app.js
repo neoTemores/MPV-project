@@ -11,8 +11,8 @@ passwordBox.addEventListener('keypress', (e) => {
 function login() {
     let inputUserName = document.querySelector('#username')
     let inputPassword = document.querySelector('#password')
-
-    fetch('http://localhost:8000/api/users')
+    // https://project-howler.herokuapp.com/api/users
+    fetch('https://project-howler.herokuapp.com/api/users')
         .then(response => response.json())
         .then(data => authenticate(data, inputUserName, inputPassword))
 }
