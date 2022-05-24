@@ -9,6 +9,14 @@ function listenForLogin() {
     })
 }
 
+let currentUser = {
+    id: null,
+    firstName: null,
+    lastName: null,
+    userName: null,
+    email: null
+}
+
 function login() {
     let inputUserName = document.querySelector('#username')
     let inputPassword = document.querySelector('#password')
@@ -25,6 +33,11 @@ function authenticate(data, inputUserName, inputPassword) {
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].user_name === username && data[i].password === password) {
+            currentUser.id = data[i].user_id;
+            currentUser.firstName = data[i].first_name;
+            currentUser.lastName = data[i].last_name;
+            currentUser.userName = data[i].user_name;
+            currentUser.email = data[i].email;
             return [showHomePage(), fetchAllPosts()];
         }
     }
@@ -42,10 +55,12 @@ function showHomePage() {
 function showSignUpMsg() {
     let signUpMessage = document.querySelector('#signUpMessage')
     signUpMessage.classList.remove('hide');
+
+    let signUpLink = document.querySelector('#signUpLink')
+    signUpLink.addEventListener('click', showSignUpPage);
 }
 
-let signUpLink = document.querySelector('#signUpLink')
-signUpLink.addEventListener('click', showSignUpPage);
+
 
 function showSignUpPage() {
     let loginDisplay = document.querySelector('#loginDisplay');
@@ -84,6 +99,7 @@ function createAccount(data, password) {
     let desiredUserName = document.querySelector('#desiredUserName')
     let signUpemail = document.querySelector('#signUpemail')
 
+    if (signUpfirstName.value.length === 0 || signUplastName.value.length === 0 || desiredUserName.value.length === 0 || signUpemail.value.length === 0) { return signUpMessage("Error: Missing value!") }
 
     for (let i = 0; i < data.length; i++) {
         const current = data[i];
@@ -99,6 +115,7 @@ function createAccount(data, password) {
         email: signUpemail.value,
         password: password.value
     }
+
     // https://project-howler.herokuapp.com/api/users/create
     fetch('http://localhost:8000/api/users/create', {
         method: 'POST',
@@ -135,7 +152,6 @@ function returnToLoginPage() {
 
 
 //! main page ============================================
-// fetchAllPosts();
 function fetchAllPosts() {
     fetch('http://localhost:8000/api/posts/all')
         .then(response => response.json())
@@ -143,17 +159,40 @@ function fetchAllPosts() {
 }
 
 function displayAllPosts(data) {
-    console.log(data);
     let resultContainer = document.querySelector('#resultContainer');
+    createNewPost(resultContainer)
+
     for (let i = 0; i < data.length; i++) {
         const current = data[i];
         let userId = current.user_id
         let userName = current.user_name
         let postContent = current.post_content
-        console.log(userId, userName, postContent);
 
         createCards(userId, userName, postContent, resultContainer)
     }
+}
+
+function createNewPost(container) {
+    let newPostDiv = document.createElement('div');
+    newPostDiv.id = "newPostDiv"
+
+    let newPostTextBox = document.createElement('textarea');
+    newPostTextBox.id = 'newPostTextBox'
+    newPostTextBox.setAttribute('maxlength', 150)
+    newPostTextBox.setAttribute('placeholder', 'Go ahead and Howl away!')
+    newPostDiv.appendChild(newPostTextBox)
+
+    let submitNewPostButton = document.createElement('button')
+    submitNewPostButton.textContent = "Howl!"
+    submitNewPostButton.id = "submitNewPostButton"
+    submitNewPostButton.addEventListener('click', () => { uploadNewPost(newPostTextBox.value) })
+    newPostDiv.appendChild(submitNewPostButton)
+
+    container.appendChild(newPostDiv)
+}
+
+function uploadNewPost() {
+
 }
 
 function createCards(userId, userName, postContent, container) {

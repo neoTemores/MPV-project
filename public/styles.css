@@ -35,6 +35,24 @@ body {
     text-align: right;
 }
 
+#newPostDiv {
+    display: grid;
+    width: fit-content;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        'newPostTextBox'
+        'submitNewPostButton';
+}
+
+#newPostTextBox {
+    width: 25vw;
+    height: 15vh;
+}
+
+#submitNewPostButton {
+    width: 5vw;
+    justify-self: center;
+}
 
 .userPostDiv {
     background-color: lightblue;
