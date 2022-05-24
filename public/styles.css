@@ -1,12 +1,12 @@
-#homePage {
-    /* display: none */
+body {
+    background-color: gray;
 }
 
 .hide {
     display: none !important;
 }
 
-#loginPage {
+#loginPageContainer {
     /* width: 80vw; */
     grid-column: auto;
     display: grid;
@@ -32,4 +32,40 @@
 
 #signUpErrors {
     text-align: right;
+}
+
+
+.userPostDiv {
+    background-color: lightblue;
+    border-radius: 15%;
+}
+
+.postCreatorName {
+    font-size: .8rem;
+    padding-top: .5rem;
+
+}
+
+.postText {
+    padding-bottom: .5rem;
+    padding-left: .5rem;
+}
+
+#homePageContainer {
+    display: grid;
+    grid-template-columns: 20vw 50vw 30vw;
+    /* grid-gap: ; */
+    grid-column-gap: 5vw;
+    /* justify-content: center; */
+
+    grid-template-areas:
+        "navPanel resultContainer newsContainer";
+}
+
+#navPanel {
+    justify-self: left;
+}
+
+#resultContainer {
+    justify-self: center;
 }

@@ -18,7 +18,7 @@ app.get('/api/users', controller.getAllUsers);
 
 app.post('/api/users/create', controller.createNewUser)
 
-
+app.get('/api/posts/all', controller.getAllPosts);
 
 
 
@@ -27,7 +27,6 @@ app.post('/api/users/create', controller.createNewUser)
 
 
 
-// app.get('/api/users', )
 
 app.get('/api/posts', async (req, res) => {
     try {
@@ -39,6 +38,3 @@ app.get('/api/posts', async (req, res) => {
         console.log(error)
     }
 })
-
-// app.post('/api/users/create', async (req, res) => {
-//    ) 

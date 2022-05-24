@@ -1,20 +1,22 @@
+listenForLogin();
+function listenForLogin() {
+    let loginButton = document.querySelector('#loginButton')
+    loginButton.addEventListener('click', login)
 
-
-let loginButton = document.querySelector('#loginButton')
-loginButton.addEventListener('click', login)
-
-let passwordBox = document.querySelector('#password')
-passwordBox.addEventListener('keypress', (e) => {
-    if (e.key == 'Enter') { return login() }
-})
+    let passwordBox = document.querySelector('#password')
+    passwordBox.addEventListener('keypress', (e) => {
+        if (e.key == 'Enter') { return login() }
+    })
+}
 
 function login() {
     let inputUserName = document.querySelector('#username')
     let inputPassword = document.querySelector('#password')
     // https://project-howler.herokuapp.com/api/users
-    fetch('https://project-howler.herokuapp.com/api/users')
+    fetch('http://localhost:8000/api/users')
         .then(response => response.json())
         .then(data => authenticate(data, inputUserName, inputPassword))
+        .catch(error => console.error(error))
 }
 
 function authenticate(data, inputUserName, inputPassword) {
@@ -23,19 +25,18 @@ function authenticate(data, inputUserName, inputPassword) {
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].user_name === username && data[i].password === password) {
-            console.log('logged in');
-            return showHomePage();
+            return [showHomePage(), fetchAllPosts()];
         }
     }
     return showSignUpMsg()
 }
 
 function showHomePage() {
-    let homePage = document.querySelector('#homePage')
-    homePage.classList.remove('hide')
+    let homePageContainer = document.querySelector('#homePageContainer')
+    homePageContainer.classList.remove('hide')
 
-    let loginPage = document.querySelector('#loginPage')
-    loginPage.classList.add('hide')
+    let loginPageContainer = document.querySelector('#loginPageContainer')
+    loginPageContainer.classList.add('hide')
 }
 
 function showSignUpMsg() {
@@ -70,7 +71,7 @@ function checkPassword() {
     if (desiredPassword.value !== verifyPassword.value || desiredPassword.value.length === 0) {
         return signUpMessage("Error: Passwords do not match!")
     }
-
+    // https://project-howler.herokuapp.com/api/users
     fetch('http://localhost:8000/api/users')
         .then(response => response.json())
         .then(data => createAccount(data, verifyPassword))
@@ -98,7 +99,7 @@ function createAccount(data, password) {
         email: signUpemail.value,
         password: password.value
     }
-
+    // https://project-howler.herokuapp.com/api/users/create
     fetch('http://localhost:8000/api/users/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -106,11 +107,22 @@ function createAccount(data, password) {
     })
         .then(response => response.json())
         .then(data => console.log('Success:', data))
-        .catch(error => { console.error(error); })
+        .catch(error => { console.error(error) })
 
-    signUpMessage('Account successfuly created! Please sign in')
+    signUpMessage('Account successfully created! Please sign in')
 
-    ///? split into diff function???
+    return returnToLoginPage();
+}
+
+function signUpMessage(msg) {
+    let signUpErrors = document.querySelector('#signUpErrors');
+    signUpErrors.textContent = ""
+    let popUpMessage = document.createElement('p')
+    popUpMessage.textContent = msg
+    return signUpErrors.appendChild(popUpMessage)
+}
+
+function returnToLoginPage() {
     let signUpMsg = document.querySelector('#signUpErrors')
     let goBackToSignInButton = document.createElement('button')
     goBackToSignInButton.id = 'goBackToSignInButton'
@@ -119,60 +131,86 @@ function createAccount(data, password) {
         window.location.reload();
     })
     signUpMsg.appendChild(goBackToSignInButton)
-
-}
-
-function signUpMessage(msg) {
-    let signUpErrors = document.querySelector('#signUpErrors');
-    signUpErrors.textContent = ""
-    let passwordP = document.createElement('p')
-    passwordP.textContent = msg
-    return signUpErrors.appendChild(passwordP)
 }
 
 
+//! main page ============================================
+// fetchAllPosts();
+function fetchAllPosts() {
+    fetch('http://localhost:8000/api/posts/all')
+        .then(response => response.json())
+        .then(data => displayAllPosts(data));
+}
+
+function displayAllPosts(data) {
+    console.log(data);
+    let resultContainer = document.querySelector('#resultContainer');
+    for (let i = 0; i < data.length; i++) {
+        const current = data[i];
+
+        let postDiv = document.createElement('div')
+        postDiv.id = current.user_id
+        postDiv.classList.add('userPostDiv')
+
+        let postCreator = document.createElement('p')
+        postCreator.textContent = (`@${current.user_name}`)
+        postCreator.classList.add('postCreatorName')
+        postDiv.appendChild(postCreator)
+
+        let postText = document.createElement('p')
+        postText.classList.add('postText')
+        postText.textContent = current.post_content
+        postDiv.appendChild(postText)
+
+        resultContainer.appendChild(postDiv)
+    }
+
+
+}
 
 
 
 //! proof of concept =================================
 
-let button = document.querySelector('#names')
+// let button = document.querySelector('#names')
 
-button.addEventListener('click', () => {
-    fetch('http://localhost:8000/api/users')
-        .then(response => response.json())
-        .then(data => displayUser(data));
-})
+// button.addEventListener('click', () => {
+//     // https://project-howler.herokuapp.com/api/users
+//     fetch('http://localhost:8000/api/users')
+//         .then(response => response.json())
+//         .then(data => displayUser(data));
+// })
 
-function displayUser(data) {
+// function displayUser(data) {
 
-    let resultContainer = document.querySelector('#resultContainer')
-    resultContainer.textContent = ""
+//     let resultContainer = document.querySelector('#resultContainer')
+//     resultContainer.textContent = ""
 
-    for (let i = 0; i < data.length; i++) {
-        console.log(data[i].user_name);
-        let div = document.createElement('div')
-        div.textContent = data[i].user_name;
-        resultContainer.appendChild(div)
-    }
-}
+//     for (let i = 0; i < data.length; i++) {
+//         console.log(data[i].user_name);
+//         let div = document.createElement('div')
+//         div.textContent = data[i].user_name;
+//         resultContainer.appendChild(div)
+//     }
+// }
 
-let button2 = document.querySelector('#emails')
-button2.addEventListener('click', () => {
-    fetch('http://localhost:8000/api/users')
-        .then(response => response.json())
-        .then(data => displayEmails(data));
-})
+// let button2 = document.querySelector('#emails')
+// button2.addEventListener('click', () => {
+//     // https://project-howler.herokuapp.com/api/users
+//     fetch('http://localhost:8000/api/users')
+//         .then(response => response.json())
+//         .then(data => displayEmails(data));
+// })
 
-function displayEmails(data) {
+// function displayEmails(data) {
 
-    let resultContainer = document.querySelector('#resultContainer')
-    resultContainer.textContent = ""
+//     let resultContainer = document.querySelector('#resultContainer')
+//     resultContainer.textContent = ""
 
-    for (let i = 0; i < data.length; i++) {
-        console.log(data[i].user_name);
-        let div = document.createElement('div')
-        div.textContent = data[i].email;
-        resultContainer.appendChild(div)
-    }
-}
+//     for (let i = 0; i < data.length; i++) {
+//         console.log(data[i].user_name);
+//         let div = document.createElement('div')
+//         div.textContent = data[i].email;
+//         resultContainer.appendChild(div)
+//     }
+// }

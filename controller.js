@@ -31,7 +31,7 @@ const createNewUser = async (req, res) => {
 const getAllPosts = async (req, res) => {
     try {
         await pool.connect();
-        let data = await pool.query('SELECT * FROM posts;')
+        let data = await pool.query('SELECT posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id;')
         return res.json(data.rows)
 
     } catch (error) {
