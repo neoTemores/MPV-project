@@ -31,7 +31,7 @@ const createNewUser = async (req, res) => {
 const getAllPosts = async (req, res) => {
     try {
         await pool.connect();
-        let data = await pool.query('SELECT posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.post_id DESC;')
+        let data = await pool.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.post_id DESC;')
         return res.json(data.rows)
 
     } catch (error) {
@@ -43,7 +43,7 @@ const getPostsById = async (req, res) => {
     let id = req.params.id
     try {
         await pool.connect();
-        let data = await pool.query('SELECT posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.post_id DESC;', [id])
+        let data = await pool.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.post_id DESC;', [id])
         return res.json(data.rows)
 
     } catch (error) {
@@ -51,9 +51,23 @@ const getPostsById = async (req, res) => {
     }
 }
 
+const createNewPost = async (req, res) => {
+    let postContent = req.body.postContent;
+    let userId = req.body.userId;
+
+    try {
+        await pool.connect();
+        let data = await pool.query('INSERT INTO posts (post_content, user_id) VALUES ($1, $2)', [postContent, userId])
+        return res.json(req.body)
+
+    } catch (error) {
+        console.error(error);
+    }
+}
 module.exports = {
     getAllUsers,
     createNewUser,
     getAllPosts,
-    getPostsById
+    getPostsById,
+    createNewPost
 }

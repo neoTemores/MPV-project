@@ -17,11 +17,11 @@ let currentUser = {
     email: null
 }
 
-function login() {
+async function login() {
     let inputUserName = document.querySelector('#username')
     let inputPassword = document.querySelector('#password')
     // https://project-howler.herokuapp.com/api/users
-    fetch('http://localhost:8000/api/users')
+    await fetch('http://localhost:8000/api/users')
         .then(response => response.json())
         .then(data => authenticate(data, inputUserName, inputPassword))
         .catch(error => console.error(error))
@@ -38,10 +38,17 @@ function authenticate(data, inputUserName, inputPassword) {
             currentUser.lastName = data[i].last_name;
             currentUser.userName = data[i].user_name;
             currentUser.email = data[i].email;
-            return [showHomePage(), fetchAllPosts()];
+
+            return loadMainPage()
         }
     }
     return showSignUpMsg()
+}
+
+function loadMainPage() {
+    showHomePage()
+    fetchAllPosts()
+    createNavPanel()
 }
 
 function showHomePage() {
@@ -50,6 +57,8 @@ function showHomePage() {
 
     let loginPageContainer = document.querySelector('#loginPageContainer')
     loginPageContainer.classList.add('hide')
+
+    return true;
 }
 
 function showSignUpMsg() {
@@ -78,7 +87,7 @@ verifyPassword.addEventListener('keypress', (e) => {
     if (e.key == 'Enter') { return checkPassword() }
 })
 
-function checkPassword() {
+async function checkPassword() {
 
     let desiredPassword = document.querySelector('#desiredPassword')
     let verifyPassword = document.querySelector('#verifyPassword')
@@ -87,13 +96,14 @@ function checkPassword() {
         return signUpMessage("Error: Passwords do not match!")
     }
     // https://project-howler.herokuapp.com/api/users
-    fetch('http://localhost:8000/api/users')
+    await fetch('http://localhost:8000/api/users')
         .then(response => response.json())
         .then(data => createAccount(data, verifyPassword))
+        .catch(error => console.error(error))
 }
 
 
-function createAccount(data, password) {
+async function createAccount(data, password) {
     let signUpfirstName = document.querySelector('#signUpfirstName')
     let signUplastName = document.querySelector('#signUplastName');
     let desiredUserName = document.querySelector('#desiredUserName')
@@ -117,7 +127,7 @@ function createAccount(data, password) {
     }
 
     // https://project-howler.herokuapp.com/api/users/create
-    fetch('http://localhost:8000/api/users/create', {
+    await fetch('http://localhost:8000/api/users/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(accountCreationData),
@@ -152,14 +162,16 @@ function returnToLoginPage() {
 
 
 //! main page ============================================
-function fetchAllPosts() {
-    fetch('http://localhost:8000/api/posts/all')
+async function fetchAllPosts() {
+    await fetch('http://localhost:8000/api/posts/all')
         .then(response => response.json())
-        .then(data => displayAllPosts(data));
+        .then(data => displayAllPosts(data))
+        .catch(error => console.error(error))
 }
 
 function displayAllPosts(data) {
     let resultContainer = document.querySelector('#resultContainer');
+    resultContainer.textContent = ""
     createNewPost(resultContainer)
 
     for (let i = 0; i < data.length; i++) {
@@ -167,8 +179,8 @@ function displayAllPosts(data) {
         let userId = current.user_id
         let userName = current.user_name
         let postContent = current.post_content
-
-        createCards(userId, userName, postContent, resultContainer)
+        let postId = current.post_id
+        createCards(userId, userName, postContent, resultContainer, postId)
     }
 }
 
@@ -191,15 +203,50 @@ function createNewPost(container) {
     container.appendChild(newPostDiv)
 }
 
-function uploadNewPost() {
+async function uploadNewPost(textContent) {
 
+    let postCreationData = {
+        postContent: textContent,
+        userId: currentUser.id
+    }
+    // https://project-howler.herokuapp.com/api/users/create
+    await fetch('http://localhost:8000/api/posts/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(postCreationData),
+    })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => { console.error(error) })
+
+    return fetchAllPosts();
 }
 
-function createCards(userId, userName, postContent, container) {
+//????
+function createCards(userId, userName, postContent, container, postId) {
     let postDiv = document.createElement('div')
     postDiv.id = userId
     postDiv.classList.add('userPostDiv')
     postDiv.addEventListener('click', (e) => { fetchThatUsersPosts(e) })
+
+    let optionsBar = document.createElement('div');
+    optionsBar.classList.add('optionsBar')
+    optionsBar.classList.add('hide')
+
+    let updateButton = document.createElement('button')
+    updateButton.id = postId
+    updateButton.classList.add('updatePostButton')
+    updateButton.textContent = 'Update post'
+    optionsBar.appendChild(updateButton)
+
+    let deletePostButton = document.createElement('button')
+    deletePostButton.id = postId
+    deletePostButton.classList.add('deletePostButton')
+    deletePostButton.textContent = 'Delete post'
+    optionsBar.appendChild(deletePostButton)
+
+    postDiv.appendChild(optionsBar)
+
 
     let postCreator = document.createElement('p')
     postCreator.textContent = (`@${userName}`)
@@ -216,11 +263,28 @@ function createCards(userId, userName, postContent, container) {
     container.appendChild(postDiv)
 }
 
+//! NAV panel =================================
 
-function fetchThatUsersPosts(e) {
+function createNavPanel() {
+    let resultContainer = document.querySelector('#resultContainer');
+    let individualPostContainer = document.querySelector('#individualPostContainer')
+
+    let goHomeButton = document.querySelector('#goHomeButton')
+
+    goHomeButton.addEventListener('click', () => {
+        individualPostContainer.classList.add('hide')
+        resultContainer.classList.remove('hide');
+        fetchAllPosts()
+    })
+
+
+}
+
+//! individual post container =============================
+async function fetchThatUsersPosts(e) {
     let userId = +e.target.id;
 
-    fetch(`http://localhost:8000/api/posts/${userId}`)
+    await fetch(`http://localhost:8000/api/posts/${userId}`)
         .then(response => response.json())
         .then(data => displayPostsByUser(data));
 }
@@ -233,63 +297,46 @@ function displayPostsByUser(data) {
     individualPostContainer.classList.remove('hide')
     individualPostContainer.textContent = ""
 
-    let homeButton = document.createElement('button')
-    homeButton.textContent = "Go Home"
-    homeButton.addEventListener('click', () => {
-        individualPostContainer.classList.add('hide')
-        resultContainer.classList.remove('hide');
-    })
-    individualPostContainer.appendChild(homeButton)
+    // let deletePostButton = document.createElement('button')
+    // deletePostButton.id = 'deletePostButton'
+    // deletePostButton.textContent = "Delete Post"
+    // deletePostButton.classList.add('hide')
+
+    // individualPostContainer.appendChild(deletePostButton)
+
     for (let i = 0; i < data.length; i++) {
         const current = data[i];
         let userId = current.user_id
         let userName = current.user_name
         let postContent = current.post_content
-        createCards(userId, userName, postContent, individualPostContainer)
+        let postId = current.post_id
+        createCards(userId, userName, postContent, individualPostContainer, postId)
+    }
+
+    let postedByUser = data[0].user_id
+
+    return deletePostOption(postedByUser)
+}
+
+function deletePostOption(postedByUser) {
+
+    let currentLoggedInUser = currentUser.id
+
+    if (postedByUser === currentLoggedInUser) {
+        // let deletePostButton = document.querySelector('#deletePostButton')
+        // deletePostButton.classList.remove('hide')
+        // deletePostButton.addEventListener('click', () => {
+        //     console.log('clicked');
+        // })
+        let optionsBarArr = document.querySelectorAll('.optionsBar');
+        console.log(optionsBarArr);
+        for (let i = 0; i < optionsBarArr.length; i++) {
+            const current = optionsBarArr[i];
+            current.classList.remove('hide')
+        }
+        return console.log('you can delete posts');
 
     }
+
+    console.log('you cant DELETE Bro!');
 }
-//! proof of concept =================================
-
-// let button = document.querySelector('#names')
-
-// button.addEventListener('click', () => {
-//     // https://project-howler.herokuapp.com/api/users
-//     fetch('http://localhost:8000/api/users')
-//         .then(response => response.json())
-//         .then(data => displayUser(data));
-// })
-
-// function displayUser(data) {
-
-//     let resultContainer = document.querySelector('#resultContainer')
-//     resultContainer.textContent = ""
-
-//     for (let i = 0; i < data.length; i++) {
-//         console.log(data[i].user_name);
-//         let div = document.createElement('div')
-//         div.textContent = data[i].user_name;
-//         resultContainer.appendChild(div)
-//     }
-// }
-
-// let button2 = document.querySelector('#emails')
-// button2.addEventListener('click', () => {
-//     // https://project-howler.herokuapp.com/api/users
-//     fetch('http://localhost:8000/api/users')
-//         .then(response => response.json())
-//         .then(data => displayEmails(data));
-// })
-
-// function displayEmails(data) {
-
-//     let resultContainer = document.querySelector('#resultContainer')
-//     resultContainer.textContent = ""
-
-//     for (let i = 0; i < data.length; i++) {
-//         console.log(data[i].user_name);
-//         let div = document.createElement('div')
-//         div.textContent = data[i].email;
-//         resultContainer.appendChild(div)
-//     }
-// }

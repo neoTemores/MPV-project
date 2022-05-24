@@ -59,6 +59,25 @@ body {
     border-radius: 15%;
 }
 
+.optionsBar {
+    background-color: orange;
+    display: grid;
+    grid-template-columns: 40% 40%;
+    grid-template-areas:
+        "updatePostButton deletePostButton";
+    grid-column-gap: 20%;
+
+}
+
+.updatePostButton {
+    color: green;
+}
+
+.deletePostButton {
+    color: red;
+    justify-self: right;
+}
+
 .userPostDiv:hover {
     opacity: 80%;
     cursor: pointer;
