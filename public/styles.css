@@ -60,7 +60,6 @@ body {
 }
 
 .optionsBar {
-    background-color: orange;
     display: grid;
     grid-template-columns: 40% 40%;
     grid-template-areas:
@@ -77,6 +76,8 @@ body {
     color: red;
     justify-self: right;
 }
+
+.updatePostTextArea {}
 
 .userPostDiv:hover {
     opacity: 80%;

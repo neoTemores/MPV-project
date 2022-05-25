@@ -23,4 +23,4 @@ app.get('/api/posts/:id', controller.getPostsById);
 
 app.post('/api/posts/create', controller.createNewPost);
 
-
+app.delete('/api/posts/:id', controller.deletePostById)

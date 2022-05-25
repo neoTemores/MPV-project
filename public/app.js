@@ -226,8 +226,11 @@ async function uploadNewPost(textContent) {
 function createCards(userId, userName, postContent, container, postId) {
     let postDiv = document.createElement('div')
     postDiv.id = userId
+    postDiv.setAttribute('postId', postId)
     postDiv.classList.add('userPostDiv')
-    postDiv.addEventListener('click', (e) => { fetchThatUsersPosts(e) })
+    if (container.id === 'resultContainer') {
+        postDiv.addEventListener('click', (e) => { fetchThatUsersPosts(+e.target.id) })
+    }
 
     let optionsBar = document.createElement('div');
     optionsBar.classList.add('optionsBar')
@@ -237,16 +240,17 @@ function createCards(userId, userName, postContent, container, postId) {
     updateButton.id = postId
     updateButton.classList.add('updatePostButton')
     updateButton.textContent = 'Update post'
+    updateButton.addEventListener('click', (e) => { updateThePost(e.target) })
     optionsBar.appendChild(updateButton)
 
     let deletePostButton = document.createElement('button')
     deletePostButton.id = postId
     deletePostButton.classList.add('deletePostButton')
     deletePostButton.textContent = 'Delete post'
+    deletePostButton.addEventListener('click', (e) => { deleteThePost(e.target) })
     optionsBar.appendChild(deletePostButton)
 
     postDiv.appendChild(optionsBar)
-
 
     let postCreator = document.createElement('p')
     postCreator.textContent = (`@${userName}`)
@@ -259,6 +263,11 @@ function createCards(userId, userName, postContent, container, postId) {
     postText.id = userId
     postText.textContent = postContent
     postDiv.appendChild(postText)
+
+    // let updateTextArea = document.createElement('textarea')
+    // updateTextArea.id = `textArea${postId}`
+    // updateTextArea.classList.add('hide')
+    // postDiv.appendChild(updateTextArea)
 
     container.appendChild(postDiv)
 }
@@ -282,11 +291,12 @@ function createNavPanel() {
 
 //! individual post container =============================
 async function fetchThatUsersPosts(e) {
-    let userId = +e.target.id;
+    let userId = e;
 
     await fetch(`http://localhost:8000/api/posts/${userId}`)
         .then(response => response.json())
-        .then(data => displayPostsByUser(data));
+        .then(data => displayPostsByUser(data))
+        .catch(error => console.error(error))
 }
 
 function displayPostsByUser(data) {
@@ -296,13 +306,6 @@ function displayPostsByUser(data) {
     let individualPostContainer = document.querySelector('#individualPostContainer')
     individualPostContainer.classList.remove('hide')
     individualPostContainer.textContent = ""
-
-    // let deletePostButton = document.createElement('button')
-    // deletePostButton.id = 'deletePostButton'
-    // deletePostButton.textContent = "Delete Post"
-    // deletePostButton.classList.add('hide')
-
-    // individualPostContainer.appendChild(deletePostButton)
 
     for (let i = 0; i < data.length; i++) {
         const current = data[i];
@@ -315,28 +318,54 @@ function displayPostsByUser(data) {
 
     let postedByUser = data[0].user_id
 
-    return deletePostOption(postedByUser)
+    return showPostOptionsBar(postedByUser)
 }
 
-function deletePostOption(postedByUser) {
+function showPostOptionsBar(postedByUser) {
 
     let currentLoggedInUser = currentUser.id
 
     if (postedByUser === currentLoggedInUser) {
-        // let deletePostButton = document.querySelector('#deletePostButton')
-        // deletePostButton.classList.remove('hide')
-        // deletePostButton.addEventListener('click', () => {
-        //     console.log('clicked');
-        // })
+
         let optionsBarArr = document.querySelectorAll('.optionsBar');
-        console.log(optionsBarArr);
         for (let i = 0; i < optionsBarArr.length; i++) {
             const current = optionsBarArr[i];
-            current.classList.remove('hide')
+            current.classList.remove('hide');
         }
-        return console.log('you can delete posts');
-
     }
+}
 
-    console.log('you cant DELETE Bro!');
+function updateThePost(target) {
+
+    let postId = +target.id
+
+    let currentDiv = document.querySelector(`div[postId='${postId}']`)
+    let addAreaTo = currentDiv.firstElementChild;
+    let newTextArea = document.createElement('textarea')
+    newTextArea.classList.add('updatePostTextArea')
+
+
+    console.log(target.parentNode);
+    target.parentNode.appendChild(newTextArea)
+    console.log(target);
+    console.log(target.nextSibling);
+    target.nextSibling.classList.add('hide')
+    // target.parentNode.insertBefore(newTextArea, target.nextSibling)
+
+
+}
+
+async function deleteThePost(target) {
+    let postId = +target.id
+    console.log(postId);
+    console.log(currentUser.id);
+
+    // https://project-howler.herokuapp.com/api/users/create
+    await fetch(`http://localhost:8000/api/posts/${postId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+    })
+        .then(response => response.json())
+        .then(() => fetchThatUsersPosts(currentUser.id))
+        .catch(error => console.error(error))
 }

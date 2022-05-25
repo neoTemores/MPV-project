@@ -58,16 +58,30 @@ const createNewPost = async (req, res) => {
     try {
         await pool.connect();
         let data = await pool.query('INSERT INTO posts (post_content, user_id) VALUES ($1, $2)', [postContent, userId])
-        return res.json(req.body)
+        res.json(req.body)
 
     } catch (error) {
         console.error(error);
     }
 }
+
+const deletePostById = async (req, res) => {
+    let postId = req.params.id
+    try {
+        await pool.connect();
+        let data = await pool.query('DELETE FROM posts WHERE post_id = $1', [postId])
+        res.json(data)
+
+    } catch (error) {
+
+    }
+}
+
 module.exports = {
     getAllUsers,
     createNewUser,
     getAllPosts,
     getPostsById,
-    createNewPost
+    createNewPost,
+    deletePostById,
 }
