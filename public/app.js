@@ -211,7 +211,7 @@ function createNewPost(container) {
     newPostDiv.appendChild(newPostTextBox)
 
     let submitNewPostButton = document.createElement('button')
-    submitNewPostButton.textContent = "Howl!"
+    submitNewPostButton.textContent = "HOWL !"
     submitNewPostButton.id = "submitNewPostButton"
     submitNewPostButton.addEventListener('click', () => { uploadNewPost(newPostTextBox.value) })
     newPostDiv.appendChild(submitNewPostButton)
