@@ -14,7 +14,8 @@ let currentUser = {
     firstName: null,
     lastName: null,
     userName: null,
-    email: null
+    email: null,
+    password: null
 }
 
 async function login() {
@@ -38,6 +39,7 @@ function authenticate(data, inputUserName, inputPassword) {
             currentUser.lastName = data[i].last_name;
             currentUser.userName = data[i].user_name;
             currentUser.email = data[i].email;
+            currentUser.password = data[i].password;
 
             return loadMainPage()
         }
@@ -58,7 +60,6 @@ function showHomePage() {
     let loginPageContainer = document.querySelector('#loginPageContainer')
     loginPageContainer.classList.add('hide')
 
-    return true;
 }
 
 function showSignUpMsg() {
@@ -222,7 +223,7 @@ async function uploadNewPost(textContent) {
     fetchAllPosts();
 }
 
-//????
+
 function createCards(userId, userName, postContent, container, postId) {
     let postDiv = document.createElement('div')
     postDiv.id = userId
@@ -286,6 +287,12 @@ function createNavPanel() {
     myPostsButton.addEventListener('click', () => { fetchThatUsersPosts(currentUser.id) })
     navPanelDiv.appendChild(myPostsButton)
 
+    let myProfileButton = document.createElement('button')
+    myProfileButton.id = 'myProfileButton'
+    myProfileButton.textContent = "Profile Settings"
+    myProfileButton.addEventListener('click', () => { showMyProfilePage() })
+    navPanelDiv.appendChild(myProfileButton)
+
     let logOutButton = document.createElement('button')
     logOutButton.id = 'logOutButton'
     logOutButton.textContent = "Log Out"
@@ -304,6 +311,71 @@ function navigateToHomePage() {
     fetchAllPosts()
 }
 
+function showMyProfilePage() {
+    let resultContainer = document.querySelector('#resultContainer')
+    resultContainer.classList.add('hide')
+
+    let individualPostContainer = document.querySelector('#individualPostContainer')
+    individualPostContainer.classList.add('hide')
+    // individualPostContainer.innerHTML = ""
+
+    displayProfileSettings()
+}
+
+function displayProfileSettings() {
+    console.log(currentUser);
+    let profileSettingsContainer = document.querySelector('#profileSettingsContainer')
+    profileSettingsContainer.classList.remove('hide')
+
+    let currentFirstName = document.querySelector('#currentFirstName')
+    currentFirstName.textContent = `First Name on file: ${currentUser.firstName} `
+
+    let currentLastName = document.querySelector('#currentLastName')
+    currentLastName.textContent = `Last Name on file: ${currentUser.lastName}`
+
+    let currentEmail = document.querySelector('#currentEmail')
+    currentEmail.textContent = `Email on file: ${currentUser.email}`
+
+    listenForUpdatedProfileSettings()
+}
+
+function listenForUpdatedProfileSettings() {
+    let updateFirstName = document.querySelector('#updateFirstName')
+    let updateLastName = document.querySelector('#updateLastName')
+    let updateEmail = document.querySelector('#updateEmail')
+    let newPassword = document.querySelector('#newPassword')
+    let verifyNewPassword = document.querySelector('#verifyNewPassword')
+
+    let updateProfileButton = document.querySelector('#updateProfileButton')
+    updateProfileButton.addEventListener('click', () => {
+        if (newPassword.value !== verifyNewPassword.value) {
+            return alert('Passwords do not match')
+        }
+        checkForNewUserData(updateFirstName.value, updateLastName.value, updateEmail.value, newPassword.value)
+    })
+}
+
+function checkForNewUserData(newFirstName, newLastName, newEmail, newPassword) {
+
+    let userData = {
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        email: currentUser.email,
+        password: currentUser.password,
+    }
+
+    if (newFirstName.length !== 0) { userData.firstName = newFirstName }
+    if (newLastName.length !== 0) { userData.lastName = newLastName }
+    if (newEmail.length !== 0) { userData.email = newEmail }
+    if (newPassword.length !== 0) { userData.password = newPassword }
+
+    updateUserDatabase(userData)
+}
+
+async function updateUserDatabase(userData) {
+    console.log(userData);
+
+}
 //! individual post container =============================
 async function fetchThatUsersPosts(e) {
     let userId = e;

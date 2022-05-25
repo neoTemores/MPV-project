@@ -110,7 +110,8 @@ body {
 
     grid-template-areas:
         "navPanelContainer resultContainer newsContainer"
-        "navPanel individualPostContainer newsContainer";
+        "navPanelContainer individualPostContainer newsContainer"
+        "navPanelContainer profileSettingsContainer newsContainer";
 }
 
 #navPanelContainer {
@@ -137,4 +138,15 @@ body {
 
 #individualPostContainer {
     justify-self: center;
+}
+
+#profileSettingsContainer {
+    justify-self: center;
+}
+
+#updateSettingsDiv {
+    background-color: lightblue;
+    display: grid;
+    width: 100%;
+    height: 100%;
 }

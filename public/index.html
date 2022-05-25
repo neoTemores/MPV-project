@@ -64,6 +64,20 @@
 
         <div id="individualPostContainer" class="hide"></div>
 
+        <div id="profileSettingsContainer" class="hide">
+            <div id="profileSettingsDiv">
+                <p>Please enter information to update:</p>
+                <label id="currentFirstName"></label><input type="text" id="updateFirstName" /><br>
+                <label id="currentLastName"></label><input type="text" id="updateLastName" /><br>
+                <label id='currentEmail'>E-Mail Address: </label><input type="email" id="updateEmail" /><br>
+                <label>If desired, enter new password:</label><input type="password" id="newPassword" /><br>
+                <label>Verify new Password: </label><input type="password" id="verifyNewPassword" /><br>
+                <button id="updateProfileButton">Update profile settings</button><br>
+                <button id="deleteProfileButton">Delete Account</button><br>
+                <div id="updateErrors"></div>
+            </div>
+        </div>
+
         <div id="newsContainer">
             <button id="test">click</button>
         </div>

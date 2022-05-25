@@ -84,7 +84,7 @@ const deletePostById = async (req, res) => {
         res.json(data)
 
     } catch (error) {
-
+        console.error(error);
     }
 }
 
