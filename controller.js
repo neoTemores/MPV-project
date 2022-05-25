@@ -2,12 +2,13 @@ const pool = require('./connection.js');
 
 const getAllUsers = async (req, res) => {
     try {
-        await pool.connect();
-        let data = await pool.query('SELECT * FROM users;')
+        let client = await pool.connect();
+        let data = await client.query('SELECT * FROM users;')
         res.json(data.rows)
-
+        client.release()
     } catch (error) {
         console.log(error)
+        res.send(error)
     }
 }
 
@@ -19,35 +20,41 @@ const createNewUser = async (req, res) => {
     let password = req.body.password
 
     try {
-        await pool.connect();
-        await pool.query('INSERT INTO users (first_name, last_name, user_name, email, password) VALUES($1, $2, $3, $4, $5);', [firstName, lastName, userName, email, password])
-        res.json(req.body)
+        let client = await pool.connect();
+        let data = await client.query('INSERT INTO users (first_name, last_name, user_name, email, password) VALUES($1, $2, $3, $4, $5);', [firstName, lastName, userName, email, password])
+        res.json(data.rows)
+        client.release()
     } catch (error) {
         console.error(error);
+        res.send(error)
     }
 }
 
 
 const getAllPosts = async (req, res) => {
     try {
-        await pool.connect();
-        let data = await pool.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.post_id DESC;')
-        return res.json(data.rows)
+        let client = await pool.connect();
+        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.post_id DESC;')
+        res.json(data.rows)
+        client.release()
 
     } catch (error) {
         console.log(error)
+        res.send(error)
     }
 }
 
 const getPostsById = async (req, res) => {
     let id = req.params.id
     try {
-        await pool.connect();
-        let data = await pool.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.post_id DESC;', [id])
-        return res.json(data.rows)
+        let client = await pool.connect();
+        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.post_id DESC;', [id])
+        res.json(data.rows)
+        client.release()
 
     } catch (error) {
         console.error(error)
+        res.send(error)
     }
 }
 
@@ -55,11 +62,13 @@ const updatePostById = async (req, res) => {
     let postId = req.params.id
     let text = req.body.text
     try {
-        await pool.connect()
-        let data = await pool.query('UPDATE posts SET post_content = $1 WHERE post_id = $2', [text, postId])
-        res.json(data)
+        let client = await pool.connect()
+        let data = await client.query('UPDATE posts SET post_content = $1 WHERE post_id = $2', [text, postId])
+        res.json(data.rows)
+        client.release()
     } catch (error) {
         console.error(error);
+        res.send(error)
     }
 }
 const createNewPost = async (req, res) => {
@@ -67,24 +76,28 @@ const createNewPost = async (req, res) => {
     let userId = req.body.userId;
 
     try {
-        await pool.connect();
-        let data = await pool.query('INSERT INTO posts (post_content, user_id) VALUES ($1, $2)', [postContent, userId])
-        res.json(req.body)
+        let client = await pool.connect();
+        let data = await client.query('INSERT INTO posts (post_content, user_id) VALUES ($1, $2)', [postContent, userId])
+        res.json(data.rows)
+        client.release()
 
     } catch (error) {
         console.error(error);
+        res.send(error)
     }
 }
 
 const deletePostById = async (req, res) => {
     let postId = req.params.id
     try {
-        await pool.connect();
-        let data = await pool.query('DELETE FROM posts WHERE post_id = $1', [postId])
-        res.json(data)
+        let client = await pool.connect();
+        let data = await client.query('DELETE FROM posts WHERE post_id = $1', [postId])
+        res.json(data.rows)
+        client.release()
 
     } catch (error) {
         console.error(error);
+        res.send(error)
     }
 }
 
@@ -96,33 +109,39 @@ const updateUserData = async (req, res) => {
     let password = req.body.password
 
     try {
-        await pool.connect();
-        await pool.query('UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE user_id = $5', [firstName, lastName, email, password, userId])
-        res.json("User Data updated")
+        let client = await pool.connect();
+        let data = await client.query('UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE user_id = $5', [firstName, lastName, email, password, userId])
+        res.json(data.rows)
+        client.release()
 
     } catch (error) {
         console.error(error)
+        res.send(error)
     }
 }
 
 const deleteUserById = async (req, res) => {
 
     try {
-        await pool.connect();
-        await pool.query('DELETE FROM users WHERE user_id = $1', [req.params.id])
-        res.json('User deleted')
+        let client = await pool.connect();
+        let data = await client.query('DELETE FROM users WHERE user_id = $1', [req.params.id])
+        res.json(data.rows)
+        client.release()
     } catch (error) {
         console.error(error)
+        res.send(error)
     }
 }
 
 const deleteAllUserPosts = async (req, res) => {
     try {
-        await pool.connect();
-        await pool.query('DELETE FROM posts WHERE user_id = $1', [req.params.id])
-        res.json('Posts deleted')
+        let client = await pool.connect();
+        let data = await client.query('DELETE FROM posts WHERE user_id = $1', [req.params.id])
+        res.json(data.rows)
+        client.release()
     } catch (error) {
         console.error(error)
+        res.send(error)
     }
 
 }
