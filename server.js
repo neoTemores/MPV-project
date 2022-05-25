@@ -15,7 +15,7 @@ app.listen(PORT, () => {
 
 app.get('/api/users', controller.getAllUsers);
 
-app.post('/api/users/create', controller.createNewUser)
+app.post('/api/users/create', controller.createNewUser);
 
 app.get('/api/posts/all', controller.getAllPosts);
 
@@ -23,4 +23,6 @@ app.get('/api/posts/:id', controller.getPostsById);
 
 app.post('/api/posts/create', controller.createNewPost);
 
-app.delete('/api/posts/:id', controller.deletePostById)
+app.delete('/api/posts/:id', controller.deletePostById);
+
+app.patch('/api/posts/:id', controller.updatePostById);

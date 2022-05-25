@@ -171,7 +171,7 @@ async function fetchAllPosts() {
 
 function displayAllPosts(data) {
     let resultContainer = document.querySelector('#resultContainer');
-    resultContainer.textContent = ""
+    resultContainer.innerHTML = ""
     createNewPost(resultContainer)
 
     for (let i = 0; i < data.length; i++) {
@@ -187,7 +187,7 @@ function displayAllPosts(data) {
 function createNewPost(container) {
     let newPostDiv = document.createElement('div');
     newPostDiv.id = "newPostDiv"
-
+    container.innerHTML = ""
     let newPostTextBox = document.createElement('textarea');
     newPostTextBox.id = 'newPostTextBox'
     newPostTextBox.setAttribute('maxlength', 150)
@@ -219,7 +219,7 @@ async function uploadNewPost(textContent) {
         .then(data => console.log('Success:', data))
         .catch(error => { console.error(error) })
 
-    return fetchAllPosts();
+    fetchAllPosts();
 }
 
 //????
@@ -233,8 +233,8 @@ function createCards(userId, userName, postContent, container, postId) {
     }
 
     let optionsBar = document.createElement('div');
-    optionsBar.classList.add('optionsBar')
     optionsBar.classList.add('hide')
+    optionsBar.classList.add('optionsBar')
 
     let updateButton = document.createElement('button')
     updateButton.id = postId
@@ -264,29 +264,44 @@ function createCards(userId, userName, postContent, container, postId) {
     postText.textContent = postContent
     postDiv.appendChild(postText)
 
-    // let updateTextArea = document.createElement('textarea')
-    // updateTextArea.id = `textArea${postId}`
-    // updateTextArea.classList.add('hide')
-    // postDiv.appendChild(updateTextArea)
-
     container.appendChild(postDiv)
 }
 
 //! NAV panel =================================
-
 function createNavPanel() {
+    let navPanelContainer = document.querySelector('#navPanelContainer')
+
+    let navPanelDiv = document.createElement('div')
+    navPanelDiv.id = "navPanelDiv"
+
+    let goHomeButton = document.createElement('button')
+    goHomeButton.id = 'goHomeButton'
+    goHomeButton.textContent = "Home"
+    goHomeButton.addEventListener('click', navigateToHomePage)
+    navPanelDiv.appendChild(goHomeButton)
+
+    let myPostsButton = document.createElement('button')
+    myPostsButton.id = 'myPostsButton'
+    myPostsButton.textContent = "My Posts"
+    myPostsButton.addEventListener('click', () => { fetchThatUsersPosts(currentUser.id) })
+    navPanelDiv.appendChild(myPostsButton)
+
+    let logOutButton = document.createElement('button')
+    logOutButton.id = 'logOutButton'
+    logOutButton.textContent = "Log Out"
+    logOutButton.addEventListener('click', () => { window.location.reload() })
+    navPanelDiv.appendChild(logOutButton)
+
+    navPanelContainer.appendChild(navPanelDiv)
+}
+
+function navigateToHomePage() {
     let resultContainer = document.querySelector('#resultContainer');
     let individualPostContainer = document.querySelector('#individualPostContainer')
 
-    let goHomeButton = document.querySelector('#goHomeButton')
-
-    goHomeButton.addEventListener('click', () => {
-        individualPostContainer.classList.add('hide')
-        resultContainer.classList.remove('hide');
-        fetchAllPosts()
-    })
-
-
+    individualPostContainer.classList.add('hide')
+    resultContainer.classList.remove('hide');
+    fetchAllPosts()
 }
 
 //! individual post container =============================
@@ -339,26 +354,48 @@ function updateThePost(target) {
 
     let postId = +target.id
 
-    let currentDiv = document.querySelector(`div[postId='${postId}']`)
-    let addAreaTo = currentDiv.firstElementChild;
+    let submitUpdateButton = document.createElement('button')
+    submitUpdateButton.textContent = "UPDATE!"
+    submitUpdateButton.classList.add('updatePostButton')
+    submitUpdateButton.id = postId
+
+    target.parentNode.appendChild(submitUpdateButton)
+
     let newTextArea = document.createElement('textarea')
     newTextArea.classList.add('updatePostTextArea')
+    submitUpdateButton.setAttribute('maxlength', 150)
 
 
-    console.log(target.parentNode);
-    target.parentNode.appendChild(newTextArea)
-    console.log(target);
-    console.log(target.nextSibling);
+    target.classList.add('hide');
     target.nextSibling.classList.add('hide')
-    // target.parentNode.insertBefore(newTextArea, target.nextSibling)
 
+    target.parentNode.appendChild(newTextArea)
 
+    submitUpdateButton.addEventListener('click', () => {
+        sendPostUpdate(postId, newTextArea.value)
+    })
+}
+
+async function sendPostUpdate(postId, textContent) {
+    let updatePost = {
+        text: textContent,
+    }
+    console.log(typeof postId);
+    // https://project-howler.herokuapp.com/api/users/create
+    await fetch(`http://localhost:8000/api/posts/${postId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatePost)
+    })
+        .then(response => response.json())
+        .then(() => fetchThatUsersPosts(currentUser.id))
+        .catch(error => console.error(error))
 }
 
 async function deleteThePost(target) {
     let postId = +target.id
-    console.log(postId);
-    console.log(currentUser.id);
+
+    if (!confirm('Are you sure you want to delete this post?')) { return }
 
     // https://project-howler.herokuapp.com/api/users/create
     await fetch(`http://localhost:8000/api/posts/${postId}`, {

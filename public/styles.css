@@ -56,20 +56,23 @@ body {
 
 .userPostDiv {
     background-color: lightblue;
-    border-radius: 15%;
+    border-radius: 10%;
+    min-width: 25vw;
 }
 
 .optionsBar {
     display: grid;
-    grid-template-columns: 40% 40%;
+    grid-template-columns: 30% 60%;
     grid-template-areas:
         "updatePostButton deletePostButton";
-    grid-column-gap: 20%;
+    grid-column-gap: 5%;
 
 }
 
 .updatePostButton {
     color: green;
+    height: fit-content;
+    width: fit-content;
 }
 
 .deletePostButton {
@@ -77,7 +80,10 @@ body {
     justify-self: right;
 }
 
-.updatePostTextArea {}
+.updatePostTextArea {
+    width: 15vw;
+    height: 15vh;
+}
 
 .userPostDiv:hover {
     opacity: 80%;
@@ -103,13 +109,27 @@ body {
     /* justify-content: center; */
 
     grid-template-areas:
-        "navPanel resultContainer newsContainer"
+        "navPanelContainer resultContainer newsContainer"
         "navPanel individualPostContainer newsContainer";
 }
 
-#navPanel {
+#navPanelContainer {
     justify-self: left;
+
 }
+
+#navPanelDiv {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 5vw;
+    grid-template-areas:
+        "goHomeButton"
+        "logOutButton";
+}
+
+#goHomeButton {}
+
+#logOutButton {}
 
 #resultContainer {
     justify-self: center;

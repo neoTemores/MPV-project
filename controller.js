@@ -51,6 +51,17 @@ const getPostsById = async (req, res) => {
     }
 }
 
+const updatePostById = async (req, res) => {
+    let postId = req.params.id
+    let text = req.body.text
+    try {
+        await pool.connect()
+        let data = await pool.query('UPDATE posts SET post_content = $1 WHERE post_id = $2', [text, postId])
+        res.json(data)
+    } catch (error) {
+        console.error(error);
+    }
+}
 const createNewPost = async (req, res) => {
     let postContent = req.body.postContent;
     let userId = req.body.userId;
@@ -84,4 +95,5 @@ module.exports = {
     getPostsById,
     createNewPost,
     deletePostById,
+    updatePostById
 }
