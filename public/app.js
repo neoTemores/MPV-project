@@ -23,8 +23,8 @@ function login() {
     let inputPassword = document.querySelector('#password')
 
     let devUrl = 'http://localhost:8000/api/users'
-    //let url = 'https://project-howler.herokuapp.com/api/users'
-    fetch(devUrl)
+    let url = 'https://project-howler.herokuapp.com/api/users'
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => { authenticate(data, inputUserName, inputPassword) })
         .catch(error => console.error(error))
@@ -99,8 +99,8 @@ function checkPassword() {
         return signUpMessage("Error: Passwords do not match!")
     }
     let devUrl = 'http://localhost:8000/api/users'
-    //let url = 'https://project-howler.herokuapp.com/api/users'
-    fetch(devUrl)
+    let url = 'https://project-howler.herokuapp.com/api/users'
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => { createAccount(data, verifyPassword) })
         .catch(error => console.error(error))
@@ -130,9 +130,9 @@ function createAccount(data, password) {
         password: password.value
     }
     let devUrl = 'http://localhost:8000/api/users/create'
-    //let url = 'https://project-howler.herokuapp.com/api/users/create'
+    let url = 'https://project-howler.herokuapp.com/api/users/create'
 
-    fetch(devUrl, {
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(accountCreationData),
@@ -169,8 +169,8 @@ function returnToLoginPage() {
 //! main page ============================================
 function fetchAllPosts() {
     let devUrl = 'http://localhost:8000/api/posts/all'
-    //let url = 'https://project-howler.herokuapp.com/api/posts/all'
-    fetch(devUrl)
+    let url = 'https://project-howler.herokuapp.com/api/posts/all'
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => displayAllPosts(data))
         .catch(error => console.error(error))
@@ -223,8 +223,8 @@ function uploadNewPost(textContent) {
     }
 
     let devUrl = 'http://localhost:8000/api/posts/create'
-    //let url = 'https://project-howler.herokuapp.com/api/posts/create'
-    fetch(devUrl, {
+    let url = 'https://project-howler.herokuapp.com/api/posts/create'
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postCreationData),
@@ -384,8 +384,8 @@ function deleteAllPostsByUser() {
     if (!confirm('Are you sure you want to DELETE your account and ALL posts?')) { return }
 
     let devUrl = `http://localhost:8000/api/delete/allPosts/user/${currentUser.id}`
-    //let url = `https://project-howler.herokuapp.com/api/delete/allPosts/user/${currentUser.id}`
-    fetch(devUrl, {
+    let url = `https://project-howler.herokuapp.com/api/delete/allPosts/user/${currentUser.id}`
+    fetch(url, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
@@ -398,8 +398,8 @@ function deleteAllPostsByUser() {
 
 function deleteProfile() {
     let devUrl = `http://localhost:8000/api/users/delete/${currentUser.id}`
-    //let url = `https://project-howler.herokuapp.com/api/users/delete/${currentUser.id}`
-    fetch(devUrl, {
+    let url = `https://project-howler.herokuapp.com/api/users/delete/${currentUser.id}`
+    fetch(url, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
@@ -433,9 +433,9 @@ function checkForNewUserData(newFirstName, newLastName, newEmail, newPassword) {
 
 function updateUserDatabase(userData) {
     let devUrl = 'http://localhost:8000/api/users/update'
-    //let url = 'https://project-howler.herokuapp.com/api/users/update'
+    let url = 'https://project-howler.herokuapp.com/api/users/update'
 
-    fetch(devUrl, {
+    fetch(url, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -457,9 +457,9 @@ function fetchThatUsersPosts(e) {
     let userId = e;
 
     let devUrl = `http://localhost:8000/api/posts/${userId}`
-    //let url = `https://project-howler.herokuapp.com/api/posts/${userId}`
+    let url = `https://project-howler.herokuapp.com/api/posts/${userId}`
 
-    fetch(devUrl)
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => {
             if (data.length === 0) {
@@ -547,8 +547,8 @@ function sendPostUpdate(postId, textContent) {
         text: textContent,
     }
     let devUrl = `http://localhost:8000/api/posts/${postId}`
-    //let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
-    fetch(devUrl, {
+    let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
+    fetch(url, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatePost)
@@ -566,8 +566,8 @@ function deleteThePost(target) {
     if (!confirm('Are you sure you want to delete this post?')) { return }
 
     let devUrl = `http://localhost:8000/api/posts/${postId}`
-    //let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
-    fetch(devUrl, {
+    let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
+    fetch(url, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
