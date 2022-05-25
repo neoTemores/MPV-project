@@ -1,17 +1,39 @@
 body {
-    background-color: gray;
+    /* background-color: gray; */
+    background-image: url('https://wallpapercave.com/wp/wp3917265.jpg');
+    background-position: center;
+    background-size: cover;
+    color: whitesmoke;
+    font-size: 1.5rem;
 }
 
 .hide {
     display: none !important;
 }
 
+#titleBar {
+    margin-left: 5vw;
+    margin-top: 5vh;
+    font-size: 4rem;
+    color: plum;
+    text-shadow: 1px 1px purple;
+}
+
+#cornerLogo {
+    margin-right: 4vw;
+}
 
 #loginPageContainer {
-    /* width: 80vw; */
+    font-weight: bold;
     grid-column: auto;
     display: grid;
     justify-items: center;
+    margin-top: 10vh;
+    font-size: 1.5rem;
+}
+
+#signUpSentence {
+    font-size: 1.1rem;
 }
 
 #loginDisplay {
@@ -20,9 +42,26 @@ body {
     justify-items: right;
 }
 
+#loginButton {
+    border-radius: 10%;
+    font-size: 1.1rem;
+}
+
 #signUpMessage {
     width: fit-content;
     text-align: right;
+    color: plum;
+
+    font-size: 1.3rem;
+    text-shadow: 1px 1px darkmagenta;
+    margin-top: 5vh;
+}
+
+.createAccMsg {}
+
+#signUpLink {
+    border-radius: 10%;
+    font-size: 1rem;
 }
 
 #signUpForm {
@@ -31,8 +70,25 @@ body {
     justify-items: right;
 }
 
+#signUpPage {
+    font-size: 1.3rem;
+}
+
+.signUpInfo {
+    margin-top: 1vh;
+    margin-bottom: 1.1vh
+}
+
+#signUpButton {
+    border-radius: 10%;
+    font-size: 1.1rem;
+}
+
 #signUpErrors {
     text-align: right;
+    color: plum;
+    font-size: 1.3rem;
+    text-shadow: 1px 1px purple;
 }
 
 #newPostDiv {
@@ -103,6 +159,7 @@ body {
 
 #homePageContainer {
     display: grid;
+    margin-top: 10vh;
     grid-template-columns: 20vw 50vw 30vw;
     /* grid-gap: ; */
     grid-column-gap: 5vw;
@@ -115,9 +172,8 @@ body {
 }
 
 #navPanelContainer {
-    justify-self: left;
-
-
+    justify-self: right;
+    /* overflow: hidden; */
 }
 
 #navPanelDiv {
@@ -129,12 +185,20 @@ body {
         "logOutButton";
 }
 
+#userNameLogo {
+    font-size: 2.5rem;
+    font-family: cursive;
+    margin-bottom: 5vh
+}
+
 #goHomeButton {}
 
 #logOutButton {}
 
 #resultContainer {
     justify-self: center;
+    height: 80vh;
+    overflow: auto;
 }
 
 #individualPostContainer {
@@ -150,4 +214,29 @@ body {
     display: grid;
     width: 100%;
     height: 100%;
+}
+
+
+a:link {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: plum;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:active {
+    color: plum;
+    background-color: transparent;
+    text-decoration: underline;
 }

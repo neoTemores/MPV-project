@@ -8,12 +8,13 @@
     <script defer src="app.js"></script>
     <link rel="stylesheet" href="styles.css">
 
-    <title>Howler</title>
+    <title> Project Howler</title>
 </head>
 
 <body>
 
-    <h1>Project Howler</h1>
+    <!-- <h1 id="titleBar"><img src="./imgs/kissclipart-wolf-fcf748caaaf70f3c.png" id="cornerLogo"> Project Howler</h1> -->
+    <h1 id="titleBar"><img src="./imgs/wolfLogo1.png" id="cornerLogo"> Project Howler</h1>
 
     <div id="loginPageContainer">
 
@@ -29,12 +30,13 @@
                 <input type="password" id="password">
             </div>
             <br>
-            <button id="loginButton">click to login</button>
+            <button id="loginButton">Sign In</button>
+            <p id="signUpSentence">Or sign up <a href="#" id="signUpHere">Here</a> </p>
 
             <div id="signUpMessage" class="hide">
-                <p>User Name or Password not found!</p>
-                <p>Please create an account.</p>
-                <button id="signUpLink">sign up</button>
+                <p class="createAccMsg">User Name or Password not found!</p>
+                <p class="createAccMsg">Please create an account.</p>
+                <button id="signUpLink">Sign Up</button>
             </div>
 
         </div>
@@ -42,13 +44,13 @@
         <div id="signUpPage" class="hide">
 
             <div id="signUpForm">
-                <p>First Name: <input type="text" id="signUpfirstName" /></p>
-                <p>Last Name: <input type="text" id="signUplastName" /></p>
-                <p>Desired User Name: <input type="text" id="desiredUserName" /></p>
-                <p>E-Mail Address: <input type="email" id="signUpemail" /></p>
-                <p>Password: <input type="password" id="desiredPassword" /></p>
-                <p>Verify Password: <input type="password" id="verifyPassword" /></p>
-                <button id="signUpButton">click to sign up</button>
+                <p class="signUpInfo">First Name: <input type="text" id="signUpfirstName" /></p>
+                <p class="signUpInfo">Last Name: <input type="text" id="signUplastName" /></p>
+                <p class="signUpInfo">Desired User Name: <input type="text" id="desiredUserName" /></p>
+                <p class="signUpInfo">E-Mail Address: <input type="email" id="signUpemail" /></p>
+                <p class="signUpInfo">Password: <input type="password" id="desiredPassword" /></p>
+                <p class="signUpInfo">Verify Password: <input type="password" id="verifyPassword" /></p>
+                <button id="signUpButton">Sign Up</button>
                 <div id="signUpErrors"></div>
 
             </div>
@@ -58,7 +60,9 @@
 
 
     <div id="homePageContainer" class="hide">
-        <div id="navPanelContainer"></div>
+        <div id="navPanelContainer">
+            <div id="userNameLogo">@neoTemo</div>
+        </div>
 
         <div id="resultContainer"></div>
 
