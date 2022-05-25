@@ -135,8 +135,8 @@ html::-webkit-scrollbar-track {
     /* border: 5px groove purple; */
     border: none;
     font-size: 2rem;
-    background-color: plum;
-    color: black;
+    /* background-color: plum; */
+    color: white;
     font-style: italic;
     background: radial-gradient(rgb(103, 64, 118), transparent);
 }
@@ -147,7 +147,7 @@ textarea::placeholder {
 }
 
 #submitNewPostButton {
-    width: 7vw;
+    width: fit-content;
     justify-self: center;
     margin-top: 1vh;
     border-radius: 10%;
@@ -214,12 +214,13 @@ textarea::placeholder {
     font-style: italic;
     padding-left: 1vw;
     text-shadow: 1px 1px darkmagenta;
-
+    margin-top: 1vh
 }
 
 .postText {
     padding-bottom: .5rem;
     padding-left: .5rem;
+    margin-bottom: 1vh;
 
     background: -webkit-linear-gradient(white, purple);
     -webkit-background-clip: text;
