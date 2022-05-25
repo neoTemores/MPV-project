@@ -18,13 +18,15 @@ let currentUser = {
     password: null
 }
 
-async function login() {
+function login() {
     let inputUserName = document.querySelector('#username')
     let inputPassword = document.querySelector('#password')
-    // https://project-howler.herokuapp.com/api/users
-    await fetch('http://localhost:8000/api/users')
-        .then(response => response.json())
-        .then(data => authenticate(data, inputUserName, inputPassword))
+
+    let devUrl = 'http://localhost:8000/api/users'
+    //let url = 'https://project-howler.herokuapp.com/api/users'
+    fetch(devUrl)
+        .then(response => { return response.json() })
+        .then(data => { authenticate(data, inputUserName, inputPassword) })
         .catch(error => console.error(error))
 }
 
@@ -88,7 +90,7 @@ verifyPassword.addEventListener('keypress', (e) => {
     if (e.key == 'Enter') { return checkPassword() }
 })
 
-async function checkPassword() {
+function checkPassword() {
 
     let desiredPassword = document.querySelector('#desiredPassword')
     let verifyPassword = document.querySelector('#verifyPassword')
@@ -96,15 +98,16 @@ async function checkPassword() {
     if (desiredPassword.value !== verifyPassword.value || desiredPassword.value.length === 0) {
         return signUpMessage("Error: Passwords do not match!")
     }
-    // https://project-howler.herokuapp.com/api/users
-    await fetch('http://localhost:8000/api/users')
-        .then(response => response.json())
-        .then(data => createAccount(data, verifyPassword))
+    let devUrl = 'http://localhost:8000/api/users'
+    //let url = 'https://project-howler.herokuapp.com/api/users'
+    fetch(devUrl)
+        .then(response => { return response.json() })
+        .then(data => { createAccount(data, verifyPassword) })
         .catch(error => console.error(error))
 }
 
 
-async function createAccount(data, password) {
+function createAccount(data, password) {
     let signUpfirstName = document.querySelector('#signUpfirstName')
     let signUplastName = document.querySelector('#signUplastName');
     let desiredUserName = document.querySelector('#desiredUserName')
@@ -126,14 +129,15 @@ async function createAccount(data, password) {
         email: signUpemail.value,
         password: password.value
     }
+    let devUrl = 'http://localhost:8000/api/users/create'
+    //let url = 'https://project-howler.herokuapp.com/api/users/create'
 
-    // https://project-howler.herokuapp.com/api/users/create
-    await fetch('http://localhost:8000/api/users/create', {
+    fetch(devUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(accountCreationData),
     })
-        .then(response => response.json())
+        .then(response => { return response.json() })
         .then(data => console.log('Success:', data))
         .catch(error => { console.error(error) })
 
@@ -147,7 +151,7 @@ function signUpMessage(msg) {
     signUpErrors.textContent = ""
     let popUpMessage = document.createElement('p')
     popUpMessage.textContent = msg
-    return signUpErrors.appendChild(popUpMessage)
+    signUpErrors.appendChild(popUpMessage)
 }
 
 function returnToLoginPage() {
@@ -163,9 +167,11 @@ function returnToLoginPage() {
 
 
 //! main page ============================================
-async function fetchAllPosts() {
-    await fetch('http://localhost:8000/api/posts/all')
-        .then(response => response.json())
+function fetchAllPosts() {
+    let devUrl = 'http://localhost:8000/api/posts/all'
+    //let url = 'https://project-howler.herokuapp.com/api/posts/all'
+    fetch(devUrl)
+        .then(response => { return response.json() })
         .then(data => displayAllPosts(data))
         .catch(error => console.error(error))
 }
@@ -173,6 +179,10 @@ async function fetchAllPosts() {
 function displayAllPosts(data) {
     let resultContainer = document.querySelector('#resultContainer');
     resultContainer.innerHTML = ""
+    // resultContainer.classList.remove('hide')
+
+    // let individualPostContainer = document.querySelector('#individualPostContainer')
+    // individualPostContainer.classList.add('hide')
     createNewPost(resultContainer)
 
     for (let i = 0; i < data.length; i++) {
@@ -183,6 +193,7 @@ function displayAllPosts(data) {
         let postId = current.post_id
         createCards(userId, userName, postContent, resultContainer, postId)
     }
+    return
 }
 
 function createNewPost(container) {
@@ -204,23 +215,25 @@ function createNewPost(container) {
     container.appendChild(newPostDiv)
 }
 
-async function uploadNewPost(textContent) {
+function uploadNewPost(textContent) {
 
     let postCreationData = {
         postContent: textContent,
         userId: currentUser.id
     }
-    // https://project-howler.herokuapp.com/api/users/create
-    await fetch('http://localhost:8000/api/posts/create', {
+
+    let devUrl = 'http://localhost:8000/api/posts/create'
+    //let url = 'https://project-howler.herokuapp.com/api/posts/create'
+    fetch(devUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postCreationData),
     })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
+        .then(response => { return response.json() })
+        .then(() => { return fetchAllPosts() })
         .catch(error => { console.error(error) })
 
-    fetchAllPosts();
+    // fetchAllPosts();
 }
 
 
@@ -306,10 +319,18 @@ function navigateToHomePage() {
     let resultContainer = document.querySelector('#resultContainer');
     let individualPostContainer = document.querySelector('#individualPostContainer')
     let profileSettingsContainer = document.querySelector('#profileSettingsContainer')
-    profileSettingsContainer.classList.add('hide')
+    let optionsBar = document.querySelectorAll('.optionsBar')
 
+    for (let i = 0; i < optionsBar.length; i++) {
+        const current = optionsBar[i];
+        current.classList.add('hide')
+    }
+    profileSettingsContainer.classList.add('hide')
     individualPostContainer.classList.add('hide')
     resultContainer.classList.remove('hide');
+
+
+
     fetchAllPosts()
 }
 
@@ -359,29 +380,30 @@ function listenForUpdatedProfileSettings() {
     })
 }
 
-async function deleteAllPostsByUser() {
+function deleteAllPostsByUser() {
     if (!confirm('Are you sure you want to DELETE your account and ALL posts?')) { return }
 
-    // https://project-howler.herokuapp.com/api/delete/allPosts/user/:id
-    await fetch(`http://localhost:8000/api/delete/allPosts/user/${currentUser.id}`, {
+    let devUrl = `http://localhost:8000/api/delete/allPosts/user/${currentUser.id}`
+    //let url = `https://project-howler.herokuapp.com/api/delete/allPosts/user/${currentUser.id}`
+    fetch(devUrl, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
-        .then(response => response.json())
+        .then(response => { return response.json() })
         // .then(data => deleteProfile())
         .catch(error => console.error(error))
 
     return deleteProfile()
 }
 
-async function deleteProfile() {
-
-    // https://project-howler.herokuapp.com/api/users/delete/:id
-    await fetch(`http://localhost:8000/api/users/delete/${currentUser.id}`, {
+function deleteProfile() {
+    let devUrl = `http://localhost:8000/api/users/delete/${currentUser.id}`
+    //let url = `https://project-howler.herokuapp.com/api/users/delete/${currentUser.id}`
+    fetch(devUrl, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
-        .then(response => response.json())
+        .then(response => { return response.json() })
         .catch(error => console.error(error))
     return userDeletedMsg()
 }
@@ -409,14 +431,16 @@ function checkForNewUserData(newFirstName, newLastName, newEmail, newPassword) {
     updateUserDatabase(userData)
 }
 
-async function updateUserDatabase(userData) {
-    // https://project-howler.herokuapp.com/api/users/update
-    await fetch('http://localhost:8000/api/users/update', {
+function updateUserDatabase(userData) {
+    let devUrl = 'http://localhost:8000/api/users/update'
+    //let url = 'https://project-howler.herokuapp.com/api/users/update'
+
+    fetch(devUrl, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
     })
-        .then(response => response.json())
+        .then(response => { return response.json() })
         // .then(data => userSuccessfullyUpdated())
         .catch(error => console.log(error))
     return userSuccessfullyUpdated()
@@ -426,17 +450,34 @@ function userSuccessfullyUpdated() {
     alert('User successfully updated, please log back in.')
     window.location.reload()
 }
+
+
 //! individual post container =============================
-async function fetchThatUsersPosts(e) {
+function fetchThatUsersPosts(e) {
     let userId = e;
 
-    await fetch(`http://localhost:8000/api/posts/${userId}`)
-        .then(response => response.json())
-        .then(data => displayPostsByUser(data))
+    let devUrl = `http://localhost:8000/api/posts/${userId}`
+    //let url = `https://project-howler.herokuapp.com/api/posts/${userId}`
+
+    fetch(devUrl)
+        .then(response => { return response.json() })
+        .then(data => {
+            if (data.length === 0) {
+                alert('No posts found')
+                return navigateToHomePage()
+            }
+            displayPostsByUser(data)
+        })
         .catch(error => console.error(error))
 }
 
 function displayPostsByUser(data) {
+
+    // if (data.length === 0) {
+    //     return navigateToHomePage()
+    //     // return alert('No posts found!')
+    // }
+
     let resultContainer = document.querySelector('#resultContainer');
     resultContainer.classList.add('hide');
 
@@ -501,35 +542,36 @@ function updateThePost(target) {
     })
 }
 
-async function sendPostUpdate(postId, textContent) {
+function sendPostUpdate(postId, textContent) {
     let updatePost = {
         text: textContent,
     }
-    console.log(typeof postId);
-    // https://project-howler.herokuapp.com/api/users/create
-    await fetch(`http://localhost:8000/api/posts/${postId}`, {
+    let devUrl = `http://localhost:8000/api/posts/${postId}`
+    //let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
+    fetch(devUrl, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatePost)
     })
-        .then(response => response.json())
+        .then(response => { return response.json() })
         // .then(data => fetchThatUsersPosts(currentUser.id))
         .catch(error => console.error(error))
 
     fetchThatUsersPosts(currentUser.id)
 }
 
-async function deleteThePost(target) {
+function deleteThePost(target) {
     let postId = +target.id
 
     if (!confirm('Are you sure you want to delete this post?')) { return }
 
-    // https://project-howler.herokuapp.com/api/users/create
-    await fetch(`http://localhost:8000/api/posts/${postId}`, {
+    let devUrl = `http://localhost:8000/api/posts/${postId}`
+    //let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
+    fetch(devUrl, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
-        .then(response => response.json())
+        .then(response => { return response.json() })
         // .then(data => fetchThatUsersPosts(currentUser.id))
         .catch(error => console.error(error))
 
