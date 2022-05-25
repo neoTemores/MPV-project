@@ -572,8 +572,8 @@ function deleteThePost(target) {
         headers: { 'Content-Type': 'application/json' },
     })
         .then(response => { return response.json() })
-        // .then(data => fetchThatUsersPosts(currentUser.id))
+        .then(() => { fetchThatUsersPosts(currentUser.id) })
         .catch(error => console.error(error))
 
-    fetchThatUsersPosts(currentUser.id)
+    // fetchThatUsersPosts(currentUser.id)
 }
