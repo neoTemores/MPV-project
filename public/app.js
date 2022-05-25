@@ -186,10 +186,7 @@ function fetchAllPosts() {
 function displayAllPosts(data) {
     let resultContainer = document.querySelector('#resultContainer');
     resultContainer.innerHTML = ""
-    // resultContainer.classList.remove('hide')
 
-    // let individualPostContainer = document.querySelector('#individualPostContainer')
-    // individualPostContainer.classList.add('hide')
     createNewPost(resultContainer)
 
     for (let i = 0; i < data.length; i++) {
@@ -291,6 +288,9 @@ function createCards(userId, userName, postContent, container, postId) {
 //! NAV panel =================================
 function createNavPanel() {
     let navPanelContainer = document.querySelector('#navPanelContainer')
+
+    let userNameLogo = document.querySelector('#userNameLogo')
+    userNameLogo.textContent = `@${currentUser.userName}`
 
     let navPanelDiv = document.createElement('div')
     navPanelDiv.id = "navPanelDiv"
@@ -479,11 +479,6 @@ function fetchThatUsersPosts(e) {
 }
 
 function displayPostsByUser(data) {
-
-    // if (data.length === 0) {
-    //     return navigateToHomePage()
-    //     // return alert('No posts found!')
-    // }
 
     let resultContainer = document.querySelector('#resultContainer');
     resultContainer.classList.add('hide');

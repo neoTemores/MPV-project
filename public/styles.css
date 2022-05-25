@@ -5,6 +5,7 @@ body {
     background-size: cover;
     color: whitesmoke;
     font-size: 1.5rem;
+    margin-left: 5vw;
 }
 
 .hide {
@@ -14,13 +15,13 @@ body {
 #titleBar {
     margin-left: 5vw;
     margin-top: 5vh;
-    font-size: 4rem;
+    font-size: 5rem;
     color: plum;
     text-shadow: 1px 1px purple;
 }
 
 #cornerLogo {
-    margin-right: 4vw;
+    margin-right: 15vw;
 }
 
 #loginPageContainer {
@@ -45,6 +46,9 @@ body {
 #loginButton {
     border-radius: 10%;
     font-size: 1.1rem;
+    color: whitesmoke;
+    background: purple;
+    box-shadow: 2px 2px 2px plum;
 }
 
 #signUpMessage {
@@ -62,6 +66,9 @@ body {
 #signUpLink {
     border-radius: 10%;
     font-size: 1rem;
+    color: whitesmoke;
+    background: purple;
+    box-shadow: 2px 2px 2px plum;
 }
 
 #signUpForm {
@@ -71,17 +78,20 @@ body {
 }
 
 #signUpPage {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 .signUpInfo {
     margin-top: 1vh;
-    margin-bottom: 1.1vh
+    margin-bottom: 2vh
 }
 
 #signUpButton {
     border-radius: 10%;
     font-size: 1.1rem;
+    color: whitesmoke;
+    background: purple;
+    box-shadow: 2px 2px 2px plum;
 }
 
 #signUpErrors {
@@ -93,7 +103,7 @@ body {
 
 #newPostDiv {
     display: grid;
-    width: fit-content;
+    width: 25vw;
     grid-template-rows: auto auto;
     grid-template-areas:
         'newPostTextBox'
@@ -101,8 +111,9 @@ body {
 }
 
 #newPostTextBox {
-    width: 25vw;
+    width: 46vw;
     height: 15vh;
+
 }
 
 #submitNewPostButton {
@@ -160,15 +171,15 @@ body {
 #homePageContainer {
     display: grid;
     margin-top: 10vh;
-    grid-template-columns: 20vw 50vw 30vw;
+    grid-template-columns: 20vw 50vw;
     /* grid-gap: ; */
-    grid-column-gap: 5vw;
+    grid-column-gap: 15vw;
     /* justify-content: center; */
 
     grid-template-areas:
-        "navPanelContainer resultContainer newsContainer"
-        "navPanelContainer individualPostContainer newsContainer"
-        "navPanelContainer profileSettingsContainer newsContainer";
+        "navPanelContainer resultContainer "
+        "navPanelContainer individualPostContainer "
+        "navPanelContainer profileSettingsContainer ";
 }
 
 #navPanelContainer {
@@ -186,7 +197,7 @@ body {
 }
 
 #userNameLogo {
-    font-size: 2.5rem;
+    font-size: 4rem;
     font-family: cursive;
     margin-bottom: 5vh
 }
@@ -199,10 +210,14 @@ body {
     justify-self: center;
     height: 80vh;
     overflow: auto;
+    padding: 2%;
 }
 
 #individualPostContainer {
     justify-self: center;
+    height: 80vh;
+    overflow: auto;
+    padding: 2%
 }
 
 #profileSettingsContainer {
