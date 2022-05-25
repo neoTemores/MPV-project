@@ -107,7 +107,6 @@ body {
     /* grid-gap: ; */
     grid-column-gap: 5vw;
     /* justify-content: center; */
-    overflow: hidden;
 
     grid-template-areas:
         "navPanelContainer resultContainer newsContainer"
@@ -117,8 +116,7 @@ body {
 
 #navPanelContainer {
     justify-self: left;
-    overflow: hidden;
-    position: absolute;
+
 
 }
 
@@ -137,17 +135,14 @@ body {
 
 #resultContainer {
     justify-self: center;
-    overflow: auto;
 }
 
 #individualPostContainer {
     justify-self: center;
-    overflow: auto
 }
 
 #profileSettingsContainer {
     justify-self: center;
-    overflow: auto;
 }
 
 #updateSettingsDiv {
