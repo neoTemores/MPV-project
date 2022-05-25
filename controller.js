@@ -88,6 +88,44 @@ const deletePostById = async (req, res) => {
     }
 }
 
+const updateUserData = async (req, res) => {
+    let userId = req.body.userId
+    let firstName = req.body.firstName
+    let lastName = req.body.lastName
+    let email = req.body.email
+    let password = req.body.password
+
+    try {
+        await pool.connect();
+        await pool.query('UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE user_id = $5', [firstName, lastName, email, password, userId])
+        res.json("User Data updated")
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const deleteUserById = async (req, res) => {
+
+    try {
+        await pool.connect();
+        await pool.query('DELETE FROM users WHERE user_id = $1', [req.params.id])
+        res.json('User deleted')
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const deleteAllUserPosts = async (req, res) => {
+    try {
+        await pool.connect();
+        await pool.query('DELETE FROM posts WHERE user_id = $1', [req.params.id])
+        res.json('Posts deleted')
+    } catch (error) {
+        console.error(error)
+    }
+
+}
 module.exports = {
     getAllUsers,
     createNewUser,
@@ -95,5 +133,8 @@ module.exports = {
     getPostsById,
     createNewPost,
     deletePostById,
-    updatePostById
+    updatePostById,
+    updateUserData,
+    deleteUserById,
+    deleteAllUserPosts
 }

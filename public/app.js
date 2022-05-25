@@ -305,6 +305,8 @@ function createNavPanel() {
 function navigateToHomePage() {
     let resultContainer = document.querySelector('#resultContainer');
     let individualPostContainer = document.querySelector('#individualPostContainer')
+    let profileSettingsContainer = document.querySelector('#profileSettingsContainer')
+    profileSettingsContainer.classList.add('hide')
 
     individualPostContainer.classList.add('hide')
     resultContainer.classList.remove('hide');
@@ -323,7 +325,6 @@ function showMyProfilePage() {
 }
 
 function displayProfileSettings() {
-    console.log(currentUser);
     let profileSettingsContainer = document.querySelector('#profileSettingsContainer')
     profileSettingsContainer.classList.remove('hide')
 
@@ -346,6 +347,9 @@ function listenForUpdatedProfileSettings() {
     let newPassword = document.querySelector('#newPassword')
     let verifyNewPassword = document.querySelector('#verifyNewPassword')
 
+    let deleteProfileButton = document.querySelector('#deleteProfileButton')
+    deleteProfileButton.addEventListener('click', deleteAllPostsByUser)
+
     let updateProfileButton = document.querySelector('#updateProfileButton')
     updateProfileButton.addEventListener('click', () => {
         if (newPassword.value !== verifyNewPassword.value) {
@@ -355,9 +359,42 @@ function listenForUpdatedProfileSettings() {
     })
 }
 
+async function deleteAllPostsByUser() {
+    if (!confirm('Are you sure you want to DELETE your account and ALL posts?')) { return }
+
+    // https://project-howler.herokuapp.com/api/delete/allPosts/user/:id
+    await fetch(`http://localhost:8000/api/delete/allPosts/user/${currentUser.id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+    })
+        .then(response => response.json())
+        // .then(data => deleteProfile())
+        .catch(error => console.error(error))
+
+    return deleteProfile()
+}
+
+async function deleteProfile() {
+
+    // https://project-howler.herokuapp.com/api/users/delete/:id
+    await fetch(`http://localhost:8000/api/users/delete/${currentUser.id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+    })
+        .then(response => response.json())
+        .catch(error => console.error(error))
+    return userDeletedMsg()
+}
+
+function userDeletedMsg() {
+    alert("Your account has been successfully deleted!")
+    window.location.reload()
+}
+
 function checkForNewUserData(newFirstName, newLastName, newEmail, newPassword) {
 
     let userData = {
+        userId: currentUser.id,
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
         email: currentUser.email,
@@ -373,8 +410,21 @@ function checkForNewUserData(newFirstName, newLastName, newEmail, newPassword) {
 }
 
 async function updateUserDatabase(userData) {
-    console.log(userData);
+    // https://project-howler.herokuapp.com/api/users/update
+    await fetch('http://localhost:8000/api/users/update', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+    })
+        .then(response => response.json())
+        // .then(data => userSuccessfullyUpdated())
+        .catch(error => console.log(error))
+    return userSuccessfullyUpdated()
+}
 
+function userSuccessfullyUpdated() {
+    alert('User successfully updated, please log back in.')
+    window.location.reload()
 }
 //! individual post container =============================
 async function fetchThatUsersPosts(e) {
@@ -389,6 +439,9 @@ async function fetchThatUsersPosts(e) {
 function displayPostsByUser(data) {
     let resultContainer = document.querySelector('#resultContainer');
     resultContainer.classList.add('hide');
+
+    let profileSettingsContainer = document.querySelector('#profileSettingsContainer')
+    profileSettingsContainer.classList.add('hide')
 
     let individualPostContainer = document.querySelector('#individualPostContainer')
     individualPostContainer.classList.remove('hide')
@@ -460,8 +513,10 @@ async function sendPostUpdate(postId, textContent) {
         body: JSON.stringify(updatePost)
     })
         .then(response => response.json())
-        .then(() => fetchThatUsersPosts(currentUser.id))
+        // .then(data => fetchThatUsersPosts(currentUser.id))
         .catch(error => console.error(error))
+
+    fetchThatUsersPosts(currentUser.id)
 }
 
 async function deleteThePost(target) {
@@ -475,6 +530,8 @@ async function deleteThePost(target) {
         headers: { 'Content-Type': 'application/json' },
     })
         .then(response => response.json())
-        .then(() => fetchThatUsersPosts(currentUser.id))
+        // .then(data => fetchThatUsersPosts(currentUser.id))
         .catch(error => console.error(error))
+
+    fetchThatUsersPosts(currentUser.id)
 }
