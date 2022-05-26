@@ -1,8 +1,8 @@
--- DROP DATABASE IF EXISTS woofproject;
+-- DROP DATABASE IF EXISTS projectHowler;
 
--- CREATE DATABASE shows;
+-- CREATE DATABASE projectHowler;
 
--- \c shows;
+-- \c projectHowler;
 
 DROP TABLE IF EXISTS users, posts;
 CREATE TABLE users (

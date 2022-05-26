@@ -1,6 +1,5 @@
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    /* background-color: gray; */
     background-image: url('https://wallpapercave.com/wp/wp3917265.jpg');
     background-position: center;
     background-size: cover;
@@ -99,10 +98,7 @@ html::-webkit-scrollbar-track {
     font-size: 1.2rem;
     text-shadow: 1px 1px darkmagenta;
     margin-top: 5vh;
-
-
 }
-
 
 #signUpLink {
     border-radius: 5%;
@@ -188,7 +184,6 @@ html::-webkit-scrollbar-track {
     color: white;
     font-style: italic;
     background: radial-gradient(rgb(103, 64, 118), transparent);
-
 }
 
 textarea::placeholder {
@@ -204,7 +199,6 @@ textarea::placeholder {
     font-size: 1.5rem;
     font-style: italic;
     color: whitesmoke;
-
     text-shadow: 3px 3px black;
     background: radial-gradient(rgb(103, 64, 118), transparent);
 }
@@ -225,7 +219,6 @@ textarea::placeholder {
     margin-bottom: 2vh;
     color: plum;
     box-shadow: 3px 3px 3px plum;
-
 }
 
 .optionsBar {
@@ -234,7 +227,6 @@ textarea::placeholder {
     grid-template-areas:
         "updatePostButton deletePostButton";
     grid-column-gap: 20%;
-
 }
 
 .updatePostButton {
@@ -244,7 +236,6 @@ textarea::placeholder {
     width: fit-content;
     font-weight: bold;
     background: transparent;
-
 }
 
 .updatePostButton:hover {
@@ -252,14 +243,12 @@ textarea::placeholder {
     font-size: 1.1rem;
 }
 
-
 .deletePostButton {
     color: tomato;
     font-size: 1rem;
     justify-self: right;
     font-weight: bold;
     background: transparent;
-
 }
 
 .deletePostButton:hover {
@@ -271,7 +260,6 @@ textarea::placeholder {
     width: 95%;
     margin-top: 2%;
     height: 15vh;
-
     border: none;
     font-size: 1rem;
     color: white;
@@ -285,7 +273,6 @@ textarea::placeholder {
     opacity: 100%;
     cursor: pointer;
     font-size: 1.6rem;
-
 }
 
 .postCreatorName {
@@ -300,14 +287,12 @@ textarea::placeholder {
 
 .timeStamp {
     width: fit-content;
-
 }
 
 .postText {
     padding-bottom: .5rem;
     padding-left: .5rem;
     margin-bottom: 1vh;
-
     background: -webkit-linear-gradient(white, purple);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -317,10 +302,7 @@ textarea::placeholder {
     display: grid;
     margin-top: 10vh;
     grid-template-columns: 20vw 50vw;
-    /* grid-gap: ; */
     grid-column-gap: 10vw;
-    /* justify-content: center; */
-
     grid-template-areas:
 
         "navPanelContainer resultContainer "
@@ -349,7 +331,6 @@ textarea::placeholder {
     /* color: plum;
     text-shadow: 1px 1px purple; */
     font-size: 4rem;
-
     background: -webkit-linear-gradient(white, purple);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -365,7 +346,6 @@ textarea::placeholder {
     color: whitesmoke;
     text-shadow: 3px 3px black;
     background: radial-gradient(rgb(103, 64, 118), transparent);
-
 }
 
 .navButtons:hover {
@@ -375,17 +355,12 @@ textarea::placeholder {
     font-size: 1.6rem;
 }
 
-#goHomeButton {}
-
-#logOutButton {}
-
 #resultContainer {
     justify-self: center;
     height: 80vh;
     overflow: auto;
     padding: 2%;
     opacity: 95%;
-
 }
 
 #resultContainer::-webkit-scrollbar {
@@ -403,7 +378,6 @@ textarea::placeholder {
 #resultContainer::-webkit-scrollbar-track {
     background-color: #5555
 }
-
 
 #individualPostContainer {
     justify-self: center;
@@ -441,7 +415,6 @@ textarea::placeholder {
     height: 100%;
     justify-content: right;
     background: radial-gradient(rgb(103, 64, 118), transparent);
-
 }
 
 #profileSettingsDiv input[type="text"] {
@@ -512,7 +485,3 @@ a:active {
     background-color: transparent;
     text-decoration: underline;
 }
-
-/* background: */
-/* radial-gradient(purple, transparent) ;
-linear-gradient(45deg, purple, transparent) ;repeating-radial-gradient(purple, transparent 100px) ;repeating-linear-gradient(45deg, purple, transparent 150px) ; */
