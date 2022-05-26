@@ -30,11 +30,11 @@ const createNewUser = async (req, res) => {
     }
 }
 
-//posts.post_id
+
 const getAllPosts = async (req, res) => {
     try {
         let client = await pool.connect();
-        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.datetime, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.datetime DESC;')
+        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.datetime, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.post_id DESC;')
         res.json(data.rows)
         client.release()
 
@@ -48,7 +48,7 @@ const getPostsById = async (req, res) => {
     let id = req.params.id
     try {
         let client = await pool.connect();
-        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.datetime, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.datetime DESC;', [id])
+        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.datetime, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.post_id DESC;', [id])
         res.json(data.rows)
         client.release()
 
