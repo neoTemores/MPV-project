@@ -29,6 +29,7 @@ html::-webkit-scrollbar-track {
 #titleBar {
     margin-left: 5vw;
     margin-top: 5vh;
+    margin-bottom: -5vh;
     font-size: 7rem;
     font-family: fantasy;
     background: -webkit-linear-gradient(white, purple);
