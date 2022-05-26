@@ -130,8 +130,10 @@ html::-webkit-scrollbar-track {
 }
 
 #newPostTextBox {
-    width: 45vw;
-    height: 15vh;
+    width: 46vw;
+    /* max-width: 40vw; */
+    min-height: 20vh;
+    height: fit-content;
     /* border: 5px groove purple; */
     border: none;
     font-size: 2rem;
@@ -139,6 +141,7 @@ html::-webkit-scrollbar-track {
     color: white;
     font-style: italic;
     background: radial-gradient(rgb(103, 64, 118), transparent);
+
 }
 
 textarea::placeholder {
@@ -154,17 +157,20 @@ textarea::placeholder {
     font-size: 1.5rem;
     font-style: italic;
     color: whitesmoke;
-    background: purple;
-    box-shadow: 2px 2px 2px plum;
+
+    text-shadow: 3px 3px black;
+    background: radial-gradient(rgb(103, 64, 118), transparent);
 }
 
 #submitNewPostButton:hover {
     cursor: pointer;
+    opacity: 80%;
+    font-size: 1.6rem;
 }
 
 .userPostDiv {
     border-radius: 2%;
-    min-width: 25vw;
+    min-width: 40vw;
     opacity: 90%;
     border: 2px solid plum;
     font-size: 1.5rem;
@@ -177,33 +183,61 @@ textarea::placeholder {
 
 .optionsBar {
     display: grid;
-    grid-template-columns: 30% 60%;
+    grid-template-columns: 40% 40%;
     grid-template-areas:
         "updatePostButton deletePostButton";
-    grid-column-gap: 5%;
+    grid-column-gap: 20%;
 
 }
 
 .updatePostButton {
-    color: green;
+    color: lightgreen;
+    font-size: 1rem;
     height: fit-content;
     width: fit-content;
+    font-weight: bold;
+    background: transparent;
+
 }
 
+.updatePostButton:hover {
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+
 .deletePostButton {
-    color: red;
+    color: tomato;
+    font-size: 1rem;
     justify-self: right;
+    font-weight: bold;
+    background: transparent;
+
+}
+
+.deletePostButton:hover {
+    cursor: pointer;
+    font-size: 1.1rem;
 }
 
 .updatePostTextArea {
-    width: 15vw;
+    width: 95%;
+    margin-top: 2%;
     height: 15vh;
+
+    border: none;
+    font-size: 1rem;
+    color: white;
+    font-style: italic;
+    opacity: 80%;
+    border: 1px double plum;
+    background: radial-gradient(#63407673, transparent);
 }
 
 .userPostDiv:hover {
     opacity: 100%;
     cursor: pointer;
-    font-size: 2rem;
+    font-size: 1.6rem;
 
 }
 
@@ -219,6 +253,7 @@ textarea::placeholder {
 
 .timeStamp {
     width: fit-content;
+
 }
 
 .postText {
@@ -236,7 +271,7 @@ textarea::placeholder {
     margin-top: 10vh;
     grid-template-columns: 20vw 50vw;
     /* grid-gap: ; */
-    grid-column-gap: 15vw;
+    grid-column-gap: 10vw;
     /* justify-content: center; */
 
     grid-template-areas:
@@ -282,9 +317,15 @@ textarea::placeholder {
     font-style: italic;
     color: whitesmoke;
     text-shadow: 3px 3px black;
-    background: purple;
-    background: -webkit-linear-gradient(white, purple);
-    box-shadow: 2px 2px 2px plum;
+    background: radial-gradient(rgb(103, 64, 118), transparent);
+
+}
+
+.navButtons:hover {
+    cursor: pointer;
+    /* font-size: 1.6rem; */
+    opacity: 80%;
+    font-size: 1.6rem;
 }
 
 #goHomeButton {}
@@ -321,19 +362,58 @@ textarea::placeholder {
     justify-self: center;
     height: 80vh;
     overflow: auto;
-    padding: 2%
+    padding: 2%;
+    opacity: 95%;
+}
+
+#individualPostContainer::-webkit-scrollbar {
+    width: 1vw;
+}
+
+#individualPostContainer::-webkit-scrollbar-thumb {
+    background-color: #7775;
+}
+
+#individualPostContainer::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
+}
+
+#individualPostContainer::-webkit-scrollbar-track {
+    background-color: #5555
 }
 
 #profileSettingsContainer {
     justify-self: center;
 }
 
-#updateSettingsDiv {
-    background-color: lightblue;
+#profileSettingsDiv {
     display: grid;
+    grid-template-columns: auto;
     width: 100%;
     height: 100%;
+    justify-content: right;
+    background: radial-gradient(rgb(103, 64, 118), transparent);
+
 }
+
+#updateProfileButton {
+    border-radius: 5%;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: lightgreen;
+    text-shadow: 3px 3px black;
+    background: radial-gradient(rgb(103, 64, 118), transparent);
+}
+
+#deleteProfileButton {
+    border-radius: 5%;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: tomato;
+    text-shadow: 3px 3px black;
+    background: radial-gradient(rgb(103, 64, 118), transparent);
+}
+
 
 
 a:link {

@@ -277,7 +277,7 @@ function createCards(userId, userName, postContent, container, postId, datetime)
 
     let postCreator = document.createElement('p')
 
-    postCreator.textContent = (`@${userName} ${datetime}`)
+    postCreator.textContent = (`@${userName}   -${datetime}`)
     postCreator.classList.add('postCreatorName')
     postCreator.id = userId
 
