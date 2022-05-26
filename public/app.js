@@ -22,9 +22,9 @@ let currentUser = {
     password: null
 }
 
-let date = new Date();
-let localTime = date.toLocaleTimeString()
-let localDate = date.toLocaleDateString()
+// let date = new Date();
+// let localTime = date.toLocaleTimeString()
+// let localDate = date.toLocaleDateString()
 
 function login() {
     let inputUserName = document.querySelector('#username')
@@ -206,6 +206,10 @@ function displayAllPosts(data) {
 }
 
 function createNewPostTextArea(container) {
+    let date = new Date();
+    let localTime = date.toLocaleTimeString()
+    let localDate = date.toLocaleDateString()
+
     let newPostDiv = document.createElement('div');
     newPostDiv.id = "newPostDiv"
     container.innerHTML = ""
@@ -557,6 +561,9 @@ function updateThePost(target) {
 }
 
 function sendPostUpdate(postId, textContent) {
+    let date = new Date();
+    let localTime = date.toLocaleTimeString()
+    let localDate = date.toLocaleDateString()
 
     let timestamp = `${localDate}, ${localTime}`;
 

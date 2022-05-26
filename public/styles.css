@@ -266,7 +266,7 @@ textarea::placeholder {
     margin-top: 2%;
     height: 15vh;
     border: none;
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: white;
     font-style: italic;
     opacity: 80%;
