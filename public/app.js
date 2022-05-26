@@ -31,7 +31,7 @@ function login() {
 
     let devUrl = 'http://localhost:8000/api/users'
     let url = 'https://project-howler.herokuapp.com/api/users'
-    fetch(devUrl)
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => { authenticate(data, inputUserName, inputPassword) })
         .catch(error => console.error(error))
@@ -110,7 +110,7 @@ function checkPassword() {
     }
     let devUrl = 'http://localhost:8000/api/users'
     let url = 'https://project-howler.herokuapp.com/api/users'
-    fetch(devUrl)
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => { createAccount(data, verifyPassword) })
         .catch(error => console.error(error))
@@ -142,7 +142,7 @@ function createAccount(data, password) {
     let devUrl = 'http://localhost:8000/api/users/create'
     let url = 'https://project-howler.herokuapp.com/api/users/create'
 
-    fetch(devUrl, {
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(accountCreationData),
@@ -180,7 +180,7 @@ function returnToLoginPage() {
 function fetchAllPosts() {
     let devUrl = 'http://localhost:8000/api/posts/all'
     let url = 'https://project-howler.herokuapp.com/api/posts/all'
-    fetch(devUrl)
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => displayAllPosts(data))
         .catch(error => console.error(error))
@@ -233,7 +233,7 @@ function uploadNewPost(textContent, timestamp) {
 
     let devUrl = 'http://localhost:8000/api/posts/create'
     let url = 'https://project-howler.herokuapp.com/api/posts/create'
-    fetch(devUrl, {
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postCreationData),
@@ -403,7 +403,7 @@ function deleteAllPostsByUser() {
 
     let devUrl = `http://localhost:8000/api/delete/allPosts/user/${currentUser.id}`
     let url = `https://project-howler.herokuapp.com/api/delete/allPosts/user/${currentUser.id}`
-    fetch(devUrl, {
+    fetch(url, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
@@ -417,7 +417,7 @@ function deleteAllPostsByUser() {
 function deleteProfile() {
     let devUrl = `http://localhost:8000/api/users/delete/${currentUser.id}`
     let url = `https://project-howler.herokuapp.com/api/users/delete/${currentUser.id}`
-    fetch(devUrl, {
+    fetch(url, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
@@ -453,7 +453,7 @@ function updateUserDatabase(userData) {
     let devUrl = 'http://localhost:8000/api/users/update'
     let url = 'https://project-howler.herokuapp.com/api/users/update'
 
-    fetch(devUrl, {
+    fetch(url, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -477,7 +477,7 @@ function fetchThatUsersPosts(e) {
     let devUrl = `http://localhost:8000/api/posts/${userId}`
     let url = `https://project-howler.herokuapp.com/api/posts/${userId}`
 
-    fetch(devUrl)
+    fetch(url)
         .then(response => { return response.json() })
         .then(data => {
             if (data.length === 0) {
@@ -566,7 +566,7 @@ function sendPostUpdate(postId, textContent) {
     }
     let devUrl = `http://localhost:8000/api/posts/${postId}`
     let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
-    fetch(devUrl, {
+    fetch(url, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatePost)
@@ -585,7 +585,7 @@ function deleteThePost(target) {
 
     let devUrl = `http://localhost:8000/api/posts/${postId}`
     let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
-    fetch(devUrl, {
+    fetch(url, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
