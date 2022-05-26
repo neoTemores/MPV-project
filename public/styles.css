@@ -157,6 +157,15 @@ html::-webkit-scrollbar-track {
     text-shadow: 1px 1px darkmagenta;
 }
 
+#goBackToSignInButton {
+    border-radius: 5%;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: whitesmoke;
+    text-shadow: 3px 3px black;
+    background: radial-gradient(rgb(103, 64, 118), transparent);
+}
+
 #newPostDiv {
     display: grid;
     width: 25vw;
