@@ -17,6 +17,7 @@ CREATE TABLE users (
 CREATE TABLE posts (
 post_id SERIAL PRIMARY KEY,
 post_content text NOT NULL,
+datetime varchar(255),
 user_id INTEGER,
 foreign key(user_id) references users(user_id)
 );

@@ -21,6 +21,9 @@ let currentUser = {
     email: null,
     password: null
 }
+let date = new Date();
+let localTime = date.toLocaleTimeString()
+let localDate = date.toLocaleDateString()
 
 function login() {
     let inputUserName = document.querySelector('#username')
@@ -187,20 +190,21 @@ function displayAllPosts(data) {
     let resultContainer = document.querySelector('#resultContainer');
     resultContainer.innerHTML = ""
 
-    createNewPost(resultContainer)
+    createNewPostTextArea(resultContainer)
 
     for (let i = 0; i < data.length; i++) {
         const current = data[i];
         let userId = current.user_id
         let userName = current.user_name
         let postContent = current.post_content
+        let datetime = current.datetime
         let postId = current.post_id
-        createCards(userId, userName, postContent, resultContainer, postId)
+        createCards(userId, userName, postContent, resultContainer, postId, datetime)
     }
     return
 }
 
-function createNewPost(container) {
+function createNewPostTextArea(container) {
     let newPostDiv = document.createElement('div');
     newPostDiv.id = "newPostDiv"
     container.innerHTML = ""
@@ -213,17 +217,18 @@ function createNewPost(container) {
     let submitNewPostButton = document.createElement('button')
     submitNewPostButton.textContent = "HOWL !"
     submitNewPostButton.id = "submitNewPostButton"
-    submitNewPostButton.addEventListener('click', () => { uploadNewPost(newPostTextBox.value) })
+    submitNewPostButton.addEventListener('click', () => { uploadNewPost(newPostTextBox.value, `${localDate}, ${localTime}`) })
     newPostDiv.appendChild(submitNewPostButton)
 
     container.appendChild(newPostDiv)
 }
 
-function uploadNewPost(textContent) {
+function uploadNewPost(textContent, timestamp) {
 
     let postCreationData = {
         postContent: textContent,
-        userId: currentUser.id
+        userId: currentUser.id,
+        datetime: timestamp
     }
 
     let devUrl = 'http://localhost:8000/api/posts/create'
@@ -241,7 +246,7 @@ function uploadNewPost(textContent) {
 }
 
 
-function createCards(userId, userName, postContent, container, postId) {
+function createCards(userId, userName, postContent, container, postId, datetime) {
     let postDiv = document.createElement('div')
     postDiv.id = userId
     postDiv.setAttribute('postId', postId)
@@ -271,9 +276,11 @@ function createCards(userId, userName, postContent, container, postId) {
     postDiv.appendChild(optionsBar)
 
     let postCreator = document.createElement('p')
-    postCreator.textContent = (`@${userName}`)
+
+    postCreator.textContent = (`@${userName} ${datetime}`)
     postCreator.classList.add('postCreatorName')
     postCreator.id = userId
+
     postDiv.appendChild(postCreator)
 
     let postText = document.createElement('p')
@@ -297,24 +304,28 @@ function createNavPanel() {
 
     let goHomeButton = document.createElement('button')
     goHomeButton.id = 'goHomeButton'
+    goHomeButton.classList.add('navButtons')
     goHomeButton.textContent = "Home"
     goHomeButton.addEventListener('click', navigateToHomePage)
     navPanelDiv.appendChild(goHomeButton)
 
     let myPostsButton = document.createElement('button')
     myPostsButton.id = 'myPostsButton'
+    myPostsButton.classList.add('navButtons')
     myPostsButton.textContent = "My Posts"
     myPostsButton.addEventListener('click', () => { fetchThatUsersPosts(currentUser.id) })
     navPanelDiv.appendChild(myPostsButton)
 
     let myProfileButton = document.createElement('button')
     myProfileButton.id = 'myProfileButton'
+    myProfileButton.classList.add('navButtons')
     myProfileButton.textContent = "Profile Settings"
     myProfileButton.addEventListener('click', () => { showMyProfilePage() })
     navPanelDiv.appendChild(myProfileButton)
 
     let logOutButton = document.createElement('button')
     logOutButton.id = 'logOutButton'
+    logOutButton.classList.add('navButtons')
     logOutButton.textContent = "Log Out"
     logOutButton.addEventListener('click', () => { window.location.reload() })
     navPanelDiv.appendChild(logOutButton)
@@ -496,7 +507,8 @@ function displayPostsByUser(data) {
         let userName = current.user_name
         let postContent = current.post_content
         let postId = current.post_id
-        createCards(userId, userName, postContent, individualPostContainer, postId)
+        let datetime = current.datetime
+        createCards(userId, userName, postContent, individualPostContainer, postId, datetime)
     }
 
     let postedByUser = data[0].user_id
@@ -545,8 +557,12 @@ function updateThePost(target) {
 }
 
 function sendPostUpdate(postId, textContent) {
+
+    let timestamp = `${localDate}, ${localTime}`;
+
     let updatePost = {
         text: textContent,
+        datetime: timestamp
     }
     let devUrl = `http://localhost:8000/api/posts/${postId}`
     let url = `https://project-howler.herokuapp.com/api/posts/${postId}`
@@ -556,10 +572,10 @@ function sendPostUpdate(postId, textContent) {
         body: JSON.stringify(updatePost)
     })
         .then(response => { return response.json() })
-        // .then(data => fetchThatUsersPosts(currentUser.id))
+        .then(() => { fetchThatUsersPosts(currentUser.id) })
         .catch(error => console.error(error))
 
-    fetchThatUsersPosts(currentUser.id)
+    // fetchThatUsersPosts(currentUser.id)
 }
 
 function deleteThePost(target) {
@@ -579,3 +595,4 @@ function deleteThePost(target) {
 
     // fetchThatUsersPosts(currentUser.id)
 }
+

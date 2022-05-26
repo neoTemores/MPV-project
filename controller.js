@@ -34,7 +34,7 @@ const createNewUser = async (req, res) => {
 const getAllPosts = async (req, res) => {
     try {
         let client = await pool.connect();
-        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.post_id DESC;')
+        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.datetime, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users on posts.user_id = users.user_id ORDER BY posts.post_id DESC;')
         res.json(data.rows)
         client.release()
 
@@ -48,7 +48,7 @@ const getPostsById = async (req, res) => {
     let id = req.params.id
     try {
         let client = await pool.connect();
-        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.post_id DESC;', [id])
+        let data = await client.query('SELECT posts.post_id, posts.post_content, posts.datetime, posts.user_id, users.user_id AS id, users.user_name from posts JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = $1 ORDER BY posts.post_id DESC;', [id])
         res.json(data.rows)
         client.release()
 
@@ -61,9 +61,10 @@ const getPostsById = async (req, res) => {
 const updatePostById = async (req, res) => {
     let postId = req.params.id
     let text = req.body.text
+    let datetime = req.body.datetime
     try {
         let client = await pool.connect()
-        let data = await client.query('UPDATE posts SET post_content = $1 WHERE post_id = $2', [text, postId])
+        let data = await client.query('UPDATE posts SET post_content = $1, datetime = $2 WHERE post_id = $3', [text, datetime, postId])
         res.json(data.rows)
         client.release()
     } catch (error) {
@@ -74,10 +75,11 @@ const updatePostById = async (req, res) => {
 const createNewPost = async (req, res) => {
     let postContent = req.body.postContent;
     let userId = req.body.userId;
+    let datetime = req.body.datetime;
 
     try {
         let client = await pool.connect();
-        let data = await client.query('INSERT INTO posts (post_content, user_id) VALUES ($1, $2)', [postContent, userId])
+        let data = await client.query('INSERT INTO posts (post_content, user_id, datetime) VALUES ($1, $2, $3)', [postContent, userId, datetime])
         res.json(data.rows)
         client.release()
 
