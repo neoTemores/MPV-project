@@ -1,12 +1,12 @@
 body {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: fantasy, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-image: url('https://wallpapercave.com/wp/wp3917265.jpg');
     background-position: center;
     background-size: cover;
     color: whitesmoke;
     font-size: 1.5rem;
     margin-left: 5vw;
-    margin-bottom: 5vh
+    margin-bottom: 5vh;
 }
 
 html::-webkit-scrollbar {
@@ -27,10 +27,9 @@ html::-webkit-scrollbar-track {
 
 #titleBar {
     margin-left: 5vw;
-    margin-top: 5vh;
+    margin-top: 1vh;
     margin-bottom: -5vh;
     font-size: 7rem;
-    font-family: fantasy;
     background: -webkit-linear-gradient(white, purple);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -46,28 +45,35 @@ html::-webkit-scrollbar-track {
     display: grid;
     justify-items: center;
     margin-top: 10vh;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     color: whitesmoke;
     font-style: italic;
 }
 
 #loginPageContainer input[type="text"] {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 #loginPageContainer input[type="password"] {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 #loginPageContainer input[type="email"] {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 #signUpSentence {
     font-size: 1.1rem;
+    margin-top: 10%;
+}
+
+#signUpSentence:hover {
+    font-size: 1.2rem;
 }
 
 #loginDisplay {
+    padding: 3%;
+    border-radius: 5%;
     width: fit-content;
     height: fit-content;
     display: grid;
@@ -94,7 +100,6 @@ html::-webkit-scrollbar-track {
     width: fit-content;
     text-align: right;
     color: -webkit-linear-gradient(white, purple);
-
     font-size: 1.2rem;
     text-shadow: 1px 1px darkmagenta;
     margin-top: 5vh;
@@ -120,11 +125,13 @@ html::-webkit-scrollbar-track {
     display: grid;
     justify-items: right;
     color: whitesmoke;
-    background: radial-gradient(rgb(39 9 51), transparent);
+    /* background: radial-gradient(rgb(39 9 51), transparent); */
 }
 
 #signUpPage {
+    padding: 2%;
     font-size: 1.5rem;
+    background: radial-gradient(rgb(39 9 51), transparent);
 }
 
 .signUpInfo {
@@ -174,13 +181,10 @@ html::-webkit-scrollbar-track {
 
 #newPostTextBox {
     width: 46vw;
-    /* max-width: 40vw; */
     min-height: 20vh;
     height: fit-content;
-    /* border: 5px groove purple; */
     border: none;
     font-size: 2rem;
-    /* background-color: plum; */
     color: white;
     font-style: italic;
     background: radial-gradient(rgb(103, 64, 118), transparent);
@@ -267,6 +271,18 @@ textarea::placeholder {
     opacity: 80%;
     border: 1px double plum;
     background: radial-gradient(#63407673, transparent);
+}
+
+.updatePostTextArea::-webkit-scrollbar {
+    width: 1vw;
+}
+
+.updatePostTextArea::-webkit-scrollbar-thumb {
+    background-color: #777;
+}
+
+.updatePostTextArea::-webkit-scrollbar-track {
+    background-color: #333
 }
 
 .userPostDiv:hover {
@@ -418,16 +434,25 @@ textarea::placeholder {
     background: radial-gradient(rgb(103, 64, 118), transparent);
 }
 
-#profileSettingsDiv input[type="text"] {
-    font-size: 1rem;
+#profileSettingsDiv input {
+    border: 1px solid plum;
+    font-size: 1.5rem;
+    color: plum;
+    border-radius: 2%;
+    opacity: 85%;
+    background: black;
+    box-shadow: 2px 2px 2px plum;
+    text-align: center;
 }
 
-#profileSettingsDiv input[type="password"] {
-    font-size: 1rem;
-}
-
-#profileSettingsDiv input[type="email"] {
-    font-size: 1rem;
+#loginPageContainer input {
+    border: 1px solid plum;
+    color: plum;
+    border-radius: 2%;
+    opacity: 85%;
+    background: black;
+    box-shadow: 1px 1px 1px plum;
+    text-align: center;
 }
 
 #profileUpdateIns {

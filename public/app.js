@@ -21,6 +21,7 @@ let currentUser = {
     email: null,
     password: null
 }
+
 let date = new Date();
 let localTime = date.toLocaleTimeString()
 let localDate = date.toLocaleDateString()
