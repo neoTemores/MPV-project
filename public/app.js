@@ -358,7 +358,6 @@ function showMyProfilePage() {
 
     let individualPostContainer = document.querySelector('#individualPostContainer')
     individualPostContainer.classList.add('hide')
-    // individualPostContainer.innerHTML = ""
 
     displayProfileSettings()
 }
@@ -575,7 +574,6 @@ function sendPostUpdate(postId, textContent) {
         .then(() => { fetchThatUsersPosts(currentUser.id) })
         .catch(error => console.error(error))
 
-    // fetchThatUsersPosts(currentUser.id)
 }
 
 function deleteThePost(target) {
@@ -592,7 +590,4 @@ function deleteThePost(target) {
         .then(response => { return response.json() })
         .then(() => { fetchThatUsersPosts(currentUser.id) })
         .catch(error => console.error(error))
-
-    // fetchThatUsersPosts(currentUser.id)
 }
-
