@@ -22,10 +22,6 @@ let currentUser = {
     password: null
 }
 
-// let date = new Date();
-// let localTime = date.toLocaleTimeString()
-// let localDate = date.toLocaleDateString()
-
 function login() {
     let inputUserName = document.querySelector('#username')
     let inputPassword = document.querySelector('#password')
