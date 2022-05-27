@@ -284,6 +284,9 @@ function createCards(userId, userName, postContent, container, postId, datetime)
 
     postDiv.appendChild(postCreator)
 
+
+
+
     let postText = document.createElement('p')
     postText.classList.add('postText')
     postText.id = userId
@@ -531,6 +534,10 @@ function showPostOptionsBar(postedByUser) {
 }
 
 function updateThePost(target) {
+    let originalPostDiv = target.parentNode.parentNode
+    let originalPostText = target.parentNode.parentNode.lastChild.textContent
+    let originalPost = target.parentNode.parentNode.lastChild
+    originalPost.classList.add('hide');
 
     let postId = +target.id
 
@@ -543,13 +550,14 @@ function updateThePost(target) {
 
     let newTextArea = document.createElement('textarea')
     newTextArea.classList.add('updatePostTextArea')
+    newTextArea.textContent = originalPostText
     submitUpdateButton.setAttribute('maxlength', 150)
-
 
     target.classList.add('hide');
     target.nextSibling.classList.add('hide')
 
-    target.parentNode.appendChild(newTextArea)
+    originalPostDiv.appendChild(newTextArea)
+    // target.parentNode.appendChild(newTextArea)
 
     submitUpdateButton.addEventListener('click', () => {
         sendPostUpdate(postId, newTextArea.value)

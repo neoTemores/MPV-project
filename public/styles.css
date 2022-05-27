@@ -264,14 +264,15 @@ textarea::placeholder {
 .updatePostTextArea {
     width: 95%;
     margin-top: 2%;
+    margin-left: 2%;
     height: 15vh;
     border: none;
-    font-size: 1.3rem;
     color: white;
     font-style: italic;
     opacity: 80%;
-    border: 1px double plum;
+    /* border: 1px double plum; */
     background: radial-gradient(#63407673, transparent);
+    font-size: 1.5rem;
 }
 
 .updatePostTextArea::-webkit-scrollbar {
