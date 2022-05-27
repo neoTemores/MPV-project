@@ -426,6 +426,7 @@ textarea::placeholder {
 
 #profileSettingsDiv {
     padding: 5%;
+    padding-top: 1%;
     color: whitesmoke;
     display: grid;
     grid-template-columns: auto;
